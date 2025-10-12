@@ -1,11 +1,12 @@
 package com.example.sharingapp;
 
+import kotlinx.serialization.Serializable
 import java.util.UUID
 
 
 class Contact(username : String,
               email : String,
-              id : String?) {
+              id : String?) : java.io.Serializable {
 
     final var username : String
     final var email : String

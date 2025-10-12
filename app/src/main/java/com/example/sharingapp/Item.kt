@@ -15,7 +15,7 @@ class Item(
     var description: String,
     var dimensions: Dimensions,
     image: Bitmap?
-) {
+) : java.io.Serializable {
 
     var status: String = "Available"
     var borrower: Contact? = null
