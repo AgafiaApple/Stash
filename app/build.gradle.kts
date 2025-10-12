@@ -2,6 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // necessary for FireStore database
+    id("com.google.gms.google-services")
+
+//    id("com.android.application")
+//    id("kotlin-android")
 }
 
 android {
@@ -40,7 +46,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -58,9 +63,18 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.appcompat)
+
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
-    implementation("androidx.viewpager:viewpager:1.0.0") // if you're not using ViewPager2
+    implementation("androidx.viewpager:viewpager:1.0.0")
+
+    // below dependencies are for FireStore database usage
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-firestore")
+    // not sure if I will need this
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
+
 
 }
