@@ -14,8 +14,7 @@ class Item(
     var maker: String,
     var description: String,
     var dimensions: Dimensions,
-    image: Bitmap?,
-    id: String?
+    image: Bitmap?
 ) {
 
     var status: String = "Available"
@@ -27,12 +26,10 @@ class Item(
 
     init { // This is the primary constructor's body
         addImage(image)
-        this.id = id ?: UUID.randomUUID().toString() // Use Elvis operator for null check and default value
+        this.id = UUID.randomUUID().toString() // Use Elvis operator for null check and default value
     }
 
-    // Secondary constructor if needed
-    constructor(title: String, maker: String, description: String, dimensions: Dimensions, image: Bitmap?) : this(title, maker, description, dimensions, image, null)
-
+    // NOTE: in a completed application, each id would need to be unique
     fun setId() {
         this.id = UUID.randomUUID().toString()
     }
