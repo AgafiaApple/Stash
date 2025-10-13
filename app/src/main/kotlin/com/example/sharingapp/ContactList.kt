@@ -10,11 +10,13 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.security.InvalidParameterException
 
-class ContactList(var contacts: ArrayList<Contact>?, var FILENAME: String) {
+// TODO: you can get rid of some of the null checks by ensuring the default value for contacts is ArrayList<Contact>()
+
+class ContactList(var contacts: ArrayList<Contact>? = ArrayList<Contact>()) {
 
 
-    fun setContacts(contact_list : ArrayList<Contact>) {
-        this.contacts = contact_list
+    fun setContacts(contactList : ArrayList<Contact>) {
+        this.contacts = contactList
     }
 
     fun getContacts() : ArrayList<Contact>?{
