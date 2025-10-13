@@ -1,8 +1,10 @@
+// TODO: I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
+
 package com.example.sharingapp
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+//import com.google.gson.Gson
+//import com.google.gson.reflect.TypeToken
 import java.io.*
 import java.lang.reflect.Type
 
@@ -47,6 +49,7 @@ class ItemList {
         return items.size
     }
 
+    // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
     fun loadItems(context: Context) {
         try {
             context.openFileInput(FILENAME).use { fis -> // Use 'use' for automatic resource management
@@ -63,6 +66,7 @@ class ItemList {
         }
     }
 
+    // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
     fun saveItems(context: Context) {
         try {
             context.openFileOutput(FILENAME, 0).use { fos -> // Use 'use' for automatic resource management

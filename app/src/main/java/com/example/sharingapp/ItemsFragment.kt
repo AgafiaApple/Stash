@@ -32,7 +32,7 @@ abstract class ItemsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         context = context // or getContext()
-        item_list.loadItems(context!!) // Non-null assertion
+        item_list.loadItems(requireContext()) // Non-null assertion
         this.inflater = inflater
         this.container = container
 
