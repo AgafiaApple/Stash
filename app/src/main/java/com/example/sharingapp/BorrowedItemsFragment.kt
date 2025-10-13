@@ -16,14 +16,14 @@ class BorrowedItemsFragment : ItemsFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.borrowed_items_fragment, container, false) // Initialize rootView
-        super.setVariables(R.layout.borrowed_items_fragment, R.id.my_borrowed_items)
+        val rootView = inflater.inflate(R.layout.fragment_borrowed_items, container, false) // Initialize rootView
+        super.setVariables(R.layout.fragment_borrowed_items, R.id.my_borrowed_items)
         super.setAdapter(this) // Changed BorrowedItemsFragment.this to this
 
         return rootView // Return rootView
     }
 
-    fun filterItems(): ArrayList<Item> {
+    override fun filterItems(): ArrayList<Item> {
         val status = "Borrowed"
         return item_list.filterItemsByStatus(status)
     }
