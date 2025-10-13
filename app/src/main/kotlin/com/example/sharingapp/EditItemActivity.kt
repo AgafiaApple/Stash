@@ -79,7 +79,9 @@ class EditItemActivity : AppCompatActivity() {
 
         if (contact != null) {
             val contact_pos = contact_list.getIndex(contact)
-            borrower_spinner.setSelection(contact_pos)
+
+            // TODO: make this more null-safe because it could be null
+            borrower_spinner.setSelection(contact_pos!!)
         }
 
         title.setText(item.getTitle())
@@ -156,7 +158,6 @@ class EditItemActivity : AppCompatActivity() {
         if (!status.isChecked()) {
             val borrower_str: String? = borrower_spinner.getSelectedItem().toString()
 
-            // TODO: use if statement and `!!` non-null asserter to ensure that its not null
             contact = contact_list.getContactByUsername(borrower_str!!)
         }
 
@@ -195,7 +196,7 @@ class EditItemActivity : AppCompatActivity() {
         val id = item.id // Reuse the item id
         item_list.deleteItem(item)
 
-        val updated_item = Item(title_str, maker_str, description_str, dimensions, image, id)
+        val updated_item = Item(title_str, maker_str, description_str, dimensions, image)
 
         val checked = status.isChecked()
         if (!checked) {
