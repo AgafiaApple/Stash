@@ -55,4 +55,28 @@ class Item(
         }
         return image
     }
+
+    fun getDescription() : String {
+        return this.description
+    }
+
+    fun getTitle() : String {
+        return this.title
+    }
+
+    fun getMaker() : String {
+        return this.maker
+    }
+
+    fun getDimensions() : Dimensions {
+        return this.dimensions
+    }
+
+    fun getBorrower() : Contact? {
+        return this.borrower
+    }
+
+    fun getStatus() : String {
+        return this.status
+    }
 }

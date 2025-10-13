@@ -1,4 +1,4 @@
-// TODO: I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
+// TODO: I need to have more safety checks in place for the possibility of `items` being null
 
 package com.example.sharingapp
 
@@ -15,31 +15,31 @@ import java.lang.reflect.Type
  */
 class ItemList {
 
-    private var items: ArrayList<Item> = ArrayList()
+    private var items : ArrayList<Item>? = null
     private val FILENAME = "items.dat" // Changed to .dat for object serialization
 
     fun setItems(item_list: ArrayList<Item>) {
         items = item_list
     }
 
-    fun getItems(): ArrayList<Item> {
+    fun getItems(): ArrayList<Item>? {
         return items
     }
 
     fun addItem(item: Item) {
-        items.add(item)
+        items!!.add(item)
     }
 
     fun deleteItem(item: Item) {
-        items.remove(item)
+        items!!.remove(item)
     }
 
     fun getItem(index: Int): Item {
-        return items[index]
+        return items!![index]
     }
 
     fun getIndex(item: Item): Int {
-        for ((index, i) in items.withIndex()) { // Use withIndex for cleaner iteration
+        for ((index, i) in items!!.withIndex()) { // Use withIndex for cleaner iteration
             if (item.id == i.id) { // Access id directly
                 return index
             }
@@ -48,13 +48,13 @@ class ItemList {
     }
 
     fun getSize(): Int {
-        return items.size
+        return items!!.size
     }
 
     // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
 
 
-    fun loadItems(context: Context): ArrayList<Item> {
+    fun loadItems(context: Context) {
         val itemsFile = getItemsFile(context)
 
         // 1. Open the file for reading
@@ -71,7 +71,7 @@ class ItemList {
                     " items yet or that an error occurred.")
         }
 
-        return items ?: ArrayList()
+        this.items = items
     } // end loadItems()
 
     private fun getItemsFile(context: Context): File {
@@ -96,17 +96,17 @@ class ItemList {
     } // end getItemsFile
 
     // saves the items in a file in ArrayList<Item> format
-    fun saveItems(context: Context, items: ArrayList<Item>) {
+    fun saveItems(context: Context) {
         val itemsFile = getItemsFile(context)
 
         ObjectOutputStream(FileOutputStream(itemsFile)).use {
-            it.writeObject(items)
+            it.writeObject(this.items)
         }
     } // end saveItems()
 
     fun filterItemsByStatus(status: String): ArrayList<Item> {
         val selectedItems = ArrayList<Item>()
-        for (i in items) { // Simplified iteration
+        for (i in this.items!!) { // Simplified iteration
             if (i.status == status) { // Access status directly
                 selectedItems.add(i)
             }
@@ -116,7 +116,7 @@ class ItemList {
 
     fun getActiveBorrowers(): ArrayList<Contact> {
         val activeBorrowers = ArrayList<Contact>()
-        for (i in items) {
+        for (i in this.items!!) {
             val borrower = i.borrower
             if (borrower != null) {
                 activeBorrowers.add(borrower)
