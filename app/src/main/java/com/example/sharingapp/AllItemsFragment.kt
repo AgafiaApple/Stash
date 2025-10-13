@@ -16,13 +16,13 @@ class AllItemsFragment : ItemsFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        super.setVariables(R.layout.all_items_fragment, R.id.my_items)
+        super.setVariables(R.layout.fragment_all_items, R.id.my_items)
         super.setAdapter(this) // Changed AllItemsFragment.this to this
 
         return rootView
     }
 
-    fun filterItems(): ArrayList<Item> {
+    override fun filterItems(): ArrayList<Item> {
         return item_list.getItems()
     }
 }
