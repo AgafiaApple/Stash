@@ -155,6 +155,8 @@ class EditItemActivity : AppCompatActivity() {
         var contact: Contact? = null
         if (!status.isChecked()) {
             val borrower_str: String? = borrower_spinner.getSelectedItem().toString()
+
+            // TODO: use if statement and `!!` non-null asserter to ensure that its not null
             contact = contact_list.getContactByUsername(borrower_str)
         }
 
