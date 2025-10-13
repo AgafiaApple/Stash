@@ -77,6 +77,7 @@ class EditContactActivity : AppCompatActivity() {
         finish()
     }
 
+    // TODO: delete the `view` parameter and/or find out why it was in the Java code to begin with
     fun deleteContact(view: View) {
 
         contactList.deleteContact(contact!!)
