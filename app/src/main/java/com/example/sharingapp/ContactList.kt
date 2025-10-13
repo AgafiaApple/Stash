@@ -1,15 +1,14 @@
 package com.example.sharingapp
 
 import android.content.Context
-import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 import java.io.Serializable
 import java.io.FileInputStream
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.security.InvalidParameterException
 
 class ContactList(var contacts: ArrayList<Contact>?, var FILENAME: String) {
 
@@ -23,20 +22,55 @@ class ContactList(var contacts: ArrayList<Contact>?, var FILENAME: String) {
     }
 
     fun getAllUsernames() : ArrayList<String> {
+        val str_arr = ArrayList<String>()
 
+        val iter = this.contacts?.listIterator()
+
+        // enter while loop if iter is NOT null
+        while(iter?.hasNext() ?: false) {
+            str_arr.add(iter.next().getUsername())
+        }
+
+        return str_arr
     }
 
     fun addContact(contact : Contact) {
+        if (this.contacts == null) {
+            this.setContacts(ArrayList<Contact>())
+        }
 
+        this.contacts!!.add(contact)
     }
 
     fun deleteContact(contact : Contact) {
+        if (this.contacts != null) {
+            // !! is used as a non-null assertion and will
+            // throw a NullPointerException if this.contacts is null
+            val success = this.contacts!!.remove(contact)
 
-    }
+            if (!success) {
+                throw InvalidParameterException("The given contact is not in the list of contacts.")
+            }
+        } else {
+            throw NullPointerException("The list of contacts is empty.")
+        }
 
-    fun getContact(idx : Int) : Contact {
+    } // end deleteContact
 
-    }
+    fun getContact(idx : Int) : Contact? {
+        if (this.contacts != null) {
+            if (idx < this.contacts!!.size) {
+               val contact = this.contacts!![idx]
+            } else {
+                throw IndexOutOfBoundsException("The given index must be less than the size of the contacts list")
+            } // end if-else
+        } else {
+            throw NullPointerException("The list of contacts is empty.")
+        } // end if-else
+
+        // will never be reached but necessary for the function to be valid
+        return null
+    } // end getContact()
 
     fun getSize() : Int {
         if (this.contacts == null) {
@@ -46,22 +80,52 @@ class ContactList(var contacts: ArrayList<Contact>?, var FILENAME: String) {
                 // throw a NullPointerException if this.contacts is null
             return this.contacts!!.size
         }
-    }
+    } // end getSize()
 
     // checks this.contacts
-    fun getIndex(contact : Contact) {
+    fun getIndex(contact : Contact) : Int? {
+        if (this.contacts != null) {
+            // !! to assert that this.contacts cannot be null
+            for (i in this.contacts!!.indices) {
+                if (this.contacts!![i].getUsername().equals(contact.getUsername())) {
+                    return i
+                }
+            } // end for
+        } // end if
 
-    }
+        return null
+    } // end getIndex()
 
 
     fun hasContactByUsername(username : String) : Boolean {
+        val iter = this.contacts?.listIterator()
 
+        // enter while loop if iter is NOT null
+        while(iter?.hasNext() ?: false) {
+            val contact = iter.next()
+            if (contact.getUsername().equals(username)) {
+                return true
+            }
+        }
+
+        return false
     }
 
     // reads contacts' usernames from this.contacts
-    fun getContactByUsername(username : String) : Contact {
+    fun getContactByUsername(username : String) : Contact? {
+        val iter = this.contacts?.listIterator()
 
-    }
+        // enter while loop if iter is NOT null
+        while(iter?.hasNext() ?: false) {
+            val contact = iter.next()
+            if (contact.getUsername().equals(username)) {
+                return contact
+            }
+        } // end while
+
+        return null
+
+    }// end getContactByUsername
 
     // loads the contacts from a file into this.contacts
     fun loadContacts(context : Context) {
