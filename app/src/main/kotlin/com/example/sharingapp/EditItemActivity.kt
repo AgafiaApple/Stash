@@ -137,7 +137,7 @@ class EditItemActivity : AppCompatActivity() {
         item_list.saveItems(context)
 
         // end EditItemActivity
-        // Intent() requires a java class
+        // Intent() requires a kotlin class
         intent = Intent(this, MainActivity::class.java)
 
         // go back to MainActivity

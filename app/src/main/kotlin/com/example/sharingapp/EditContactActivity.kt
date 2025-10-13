@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 class EditContactActivity : AppCompatActivity() {
 
     private lateinit var contactList : ContactList
-    private lateinit var contact: Contact
+    private var contact: Contact? = null
     private lateinit var email: EditText
     private lateinit var username: EditText
     private lateinit var context: Context
@@ -30,14 +30,16 @@ class EditContactActivity : AppCompatActivity() {
         val intent = intent
         val pos = intent.getIntExtra("position", 0)
 
-        // TODO: ensure only non-null values allowed - use if statements and the non-null asserter `!!`
+        if (contactList.contacts == null) {
+            contactList.setContacts(ArrayList<Contact>())
+        }
         contact = contactList.getContact(pos)
 
         username = findViewById(R.id.username)
         email = findViewById(R.id.email)
 
-        username.setText(contact.getUsername())
-        email.setText(contact.getEmail())
+        username.setText(contact!!.getUsername())
+        email.setText(contact!!.getEmail())
     }
 
     fun saveContact(view: View) {
@@ -55,13 +57,13 @@ class EditContactActivity : AppCompatActivity() {
         }
 
         val usernameStr = username.text.toString()
-        val id = contact.id // Reuse the contact id
+        val id = contact!!.id // Reuse the contact id
 
-        contactList.deleteContact(contact)
+        contactList.deleteContact(contact!!)
 
         // Check that username is unique AND username is changed (Note: if username was not changed
         // then this should be fine, because it was already unique.)
-        if (!contactList.isUsernameAvailable(usernameStr) && !(contact.username == usernameStr)) {
+        if (!contactList.isUsernameAvailable(usernameStr) && !(contact!!.getUsername() == usernameStr)) {
             username.error = "Username already taken!"
             return
         }
@@ -77,7 +79,7 @@ class EditContactActivity : AppCompatActivity() {
 
     fun deleteContact(view: View) {
 
-        contactList.deleteContact(contact)
+        contactList.deleteContact(contact!!)
         contactList.saveContacts(context)
 
         // End EditContactActivity
