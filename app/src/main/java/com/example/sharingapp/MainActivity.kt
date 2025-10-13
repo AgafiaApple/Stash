@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+
+            // TODO: make a contacts xml if needed and a ContactsActivity (or ask Dr. Ironsmith what you need to do if not that)
             R.id.contacts -> {
                 val intent = Intent(this, ContactsActivity::class.java)
                 startActivity(intent)
