@@ -148,7 +148,8 @@ class ContactList(var contacts: ArrayList<Contact>?, var FILENAME: String) {
     } // end loadContacts()
 
     private fun getContactsFile(context : Context) : File {
-        val contactsFile = File(context.filesDir, "contacts")
+        // I should change "contacts.dat" to just a constant FILENAME variable
+        val contactsFile = File(context.filesDir, "contacts.dat")
 
         if (!contactsFile.exists()) {
             try {

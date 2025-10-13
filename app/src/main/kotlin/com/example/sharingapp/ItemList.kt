@@ -8,13 +8,15 @@ import android.content.Context
 import java.io.*
 import java.lang.reflect.Type
 
+
+
 /**
  * ItemList class
  */
 class ItemList {
 
     private var items: ArrayList<Item> = ArrayList()
-    private val FILENAME = "items.sav"
+    private val FILENAME = "items.dat" // Changed to .dat for object serialization
 
     fun setItems(item_list: ArrayList<Item>) {
         items = item_list
@@ -33,7 +35,7 @@ class ItemList {
     }
 
     fun getItem(index: Int): Item {
-        return items[index] // Simplified access using []
+        return items[index]
     }
 
     fun getIndex(item: Item): Int {
@@ -50,38 +52,57 @@ class ItemList {
     }
 
     // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
-    fun loadItems(context: Context) {
-        try {
-            context.openFileInput(FILENAME).use { fis -> // Use 'use' for automatic resource management
-                InputStreamReader(fis).use { isr ->
-                    val gson = Gson()
-                    val listType: Type = object : TypeToken<ArrayList<Item>>() {}.type
-                    items = gson.fromJson(isr, listType) ?: ArrayList() // Provide default value
-                }
-            }
-        } catch (e: FileNotFoundException) {
-            items = ArrayList()
-        } catch (e: IOException) {
-            items = ArrayList()
-        }
-    }
 
-    // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
-    fun saveItems(context: Context) {
-        try {
-            context.openFileOutput(FILENAME, 0).use { fos -> // Use 'use' for automatic resource management
-                OutputStreamWriter(fos).use { osw ->
-                    val gson = Gson()
-                    gson.toJson(items, osw)
-                    osw.flush()
-                }
-            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
+
+    fun loadItems(context: Context): ArrayList<Item> {
+        val itemsFile = getItemsFile(context)
+
+        // 1. Open the file for reading
+        //      ObjectInputStream reads the object from the file
+        //      `use` ensures the file is closed immediately after use
+        var items: ArrayList<Item>? = ObjectInputStream(FileInputStream(itemsFile)).use {
+            // 2. Read the object from the file
+            //      objectInputStream.readObject() reads the object that was written to the file
+            it.readObject() as? ArrayList<Item>
         }
-    }
+
+        if (items == null) {
+            println("Warning! `items` was loaded as `null`. This means either the user has no" +
+                    " items yet or that an error occurred.")
+        }
+
+        return items ?: ArrayList()
+    } // end loadItems()
+
+    private fun getItemsFile(context: Context): File {
+        val itemsFile = File(context.filesDir, FILENAME)
+
+        if (!itemsFile.exists()) {
+            try {
+                if (itemsFile.createNewFile()) {
+                    println("File created: ${itemsFile.absolutePath}")
+                } else {
+                    println("File already exists - check for errors")
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                println("Error creating file ${e.message}")
+            }
+        } else {
+            println("File already exists: ${itemsFile.absolutePath}")
+        }
+
+        return itemsFile
+    } // end getItemsFile
+
+    // saves the items in a file in ArrayList<Item> format
+    fun saveItems(context: Context, items: ArrayList<Item>) {
+        val itemsFile = getItemsFile(context)
+
+        ObjectOutputStream(FileOutputStream(itemsFile)).use {
+            it.writeObject(items)
+        }
+    } // end saveItems()
 
     fun filterItemsByStatus(status: String): ArrayList<Item> {
         val selectedItems = ArrayList<Item>()
