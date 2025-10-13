@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1025323733825",
+    "project_id": "sharingapp-e3a3d",
+    "storage_bucket": "sharingapp-e3a3d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025323733825:android:2cc2a50c52ad9a979847c0",
+        "android_client_info": {
+          "package_name": "com.example.sharingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUCTC-TOGkoz7GN92bx2N9uAEPrAJC7AM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
