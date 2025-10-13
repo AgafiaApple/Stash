@@ -92,7 +92,7 @@ class AddItemActivity : AppCompatActivity() {
         val dimensions = Dimensions(lengthStr, widthStr, heightStr)
 
         // Create Item object
-        val item = Item(titleStr, makerStr, descriptionStr, dimensions, image, null)
+        val item = Item(titleStr, makerStr, descriptionStr, dimensions, image)
 
         // Add item, save items, and navigate back to MainActivity
         item_list.addItem(item)
