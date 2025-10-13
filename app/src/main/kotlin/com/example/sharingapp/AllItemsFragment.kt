@@ -22,7 +22,7 @@ class AllItemsFragment : ItemsFragment() {
         return rootView
     }
 
-    override fun filterItems(): ArrayList<Item> {
+    override fun filterItems(): ArrayList<Item>? {
         return item_list.getItems()
     }
 }

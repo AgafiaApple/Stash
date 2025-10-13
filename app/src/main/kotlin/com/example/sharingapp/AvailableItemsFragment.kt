@@ -26,7 +26,7 @@ class AvailableItemsFragment : ItemsFragment() {
         return rootView
     }
 
-    override fun filterItems(): ArrayList<Item> {
+    override fun filterItems(): ArrayList<Item>? {
         val status = "Available"
         return item_list.filterItemsByStatus(status)
     }

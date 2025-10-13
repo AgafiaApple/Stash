@@ -23,7 +23,7 @@ class BorrowedItemsFragment : ItemsFragment() {
         return rootView // Return rootView
     }
 
-    override fun filterItems(): ArrayList<Item> {
+    override fun filterItems(): ArrayList<Item>? {
         val status = "Borrowed"
         return item_list.filterItemsByStatus(status)
     }

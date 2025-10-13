@@ -74,5 +74,5 @@ abstract class ItemsFragment : Fragment() {
      * filterItems is implemented independently by AvailableItemsFragment, BorrowedItemsFragment and AllItemsFragment
      * @return selected_items
      */
-    abstract fun filterItems(): ArrayList<Item>
+    abstract fun filterItems(): ArrayList<Item>?
 }
