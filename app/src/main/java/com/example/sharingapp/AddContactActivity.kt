@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.activity.contextaware.ContextAware
 
 class AddContactActivity : AppCompatActivity() {
-    private val contact_list = ContactList()
+    private lateinit var contactList : ContactList
     private lateinit var context: Context
 
     private lateinit var username: EditText
@@ -42,15 +42,15 @@ class AddContactActivity : AppCompatActivity() {
             email.setError("Must be an email address!")
             return;
         }
-        if (!contact_list.isUsernameAvailable(username_str)) {
+        if (!contactList.isUsernameAvailable(username_str)) {
             username.setError("Username already taken!")
             return;
         }
 
         val contact = Contact(username_str, email_str, null)
 
-        contact_list.addContact(contact)
-        contact_list.saveContacts(context)
+        contactList.addContact(contact)
+        contactList.saveContacts(context)
 
         // end AddContactsActivity
         finish()
