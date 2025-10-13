@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
  */
 class EditContactActivity : AppCompatActivity() {
 
-    private val contact_list = ContactList()
+    private lateinit var contactList : ContactList
     private lateinit var contact: Contact
     private lateinit var email: EditText
     private lateinit var username: EditText
@@ -25,12 +25,13 @@ class EditContactActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_contact)
 
         context = applicationContext
-        contact_list.loadContacts(context)
+        contactList.loadContacts(context)
 
         val intent = intent
         val pos = intent.getIntExtra("position", 0)
 
-        contact = contact_list.getContact(pos)
+        // TODO: ensure only non-null values allowed - use if statements and the non-null asserter `!!`
+        contact = contactList.getContact(pos)
 
         username = findViewById(R.id.username)
         email = findViewById(R.id.email)
@@ -56,19 +57,19 @@ class EditContactActivity : AppCompatActivity() {
         val usernameStr = username.text.toString()
         val id = contact.id // Reuse the contact id
 
-        contact_list.deleteContact(contact)
+        contactList.deleteContact(contact)
 
         // Check that username is unique AND username is changed (Note: if username was not changed
         // then this should be fine, because it was already unique.)
-        if (!contact_list.isUsernameAvailable(usernameStr) && !(contact.username == usernameStr)) {
+        if (!contactList.isUsernameAvailable(usernameStr) && !(contact.username == usernameStr)) {
             username.error = "Username already taken!"
             return
         }
 
         val updatedContact = Contact(usernameStr, emailStr, id)
 
-        contact_list.addContact(updatedContact)
-        contact_list.saveContacts(context)
+        contactList.addContact(updatedContact)
+        contactList.saveContacts(context)
 
         // End EditContactActivity
         finish()
@@ -76,8 +77,8 @@ class EditContactActivity : AppCompatActivity() {
 
     fun deleteContact(view: View) {
 
-        contact_list.deleteContact(contact)
-        contact_list.saveContacts(context)
+        contactList.deleteContact(contact)
+        contactList.saveContacts(context)
 
         // End EditContactActivity
         finish()
