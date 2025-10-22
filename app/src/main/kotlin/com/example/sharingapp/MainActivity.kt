@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+//        val toolbar: Toolbar = findViewById(R.id.toolbar)
+//        setSupportActionBar(toolbar)
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
 
-            // TODO: make a contacts xml if needed and a ContactsActivity (or ask Dr. Ironsmith what you need to do if not that)
             R.id.contacts -> {
                 val intent = Intent(this, ContactsActivity::class.java)
                 startActivity(intent)

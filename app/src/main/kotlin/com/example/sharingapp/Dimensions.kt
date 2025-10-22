@@ -9,14 +9,17 @@ data class Dimensions(
     var height: String
 ) {
 
+    @JvmName("getLengthFlow")
     fun getLength(): String {
         return length
     }
 
+    @JvmName("getWidthFlow")
     fun getWidth(): String {
         return width
     }
 
+    @JvmName("getHeightFlow")
     fun getHeight(): String {
         return height
     }

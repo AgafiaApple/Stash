@@ -48,6 +48,7 @@ class Item(
         }
     }
 
+    @JvmName("getImageFlow")
     fun getImage(): Bitmap? {
         if (image == null && image_base64 != null) {
             val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
@@ -56,26 +57,33 @@ class Item(
         return image
     }
 
+    @JvmName("getDescriptionFlow")
     fun getDescription() : String {
         return this.description
     }
 
+
+    @JvmName("getTitleFlow")
     fun getTitle() : String {
         return this.title
     }
 
+    @JvmName("getMakerFlow")
     fun getMaker() : String {
         return this.maker
     }
 
+    @JvmName("getDimensionsFlow")
     fun getDimensions() : Dimensions {
         return this.dimensions
     }
 
+    @JvmName("getBorrowerFlow")
     fun getBorrower() : Contact? {
         return this.borrower
     }
 
+    @JvmName("getStatusFlow")
     fun getStatus() : String {
         return this.status
     }

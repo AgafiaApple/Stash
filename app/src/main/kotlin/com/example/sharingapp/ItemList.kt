@@ -3,10 +3,8 @@
 package com.example.sharingapp
 
 import android.content.Context
-//import com.google.gson.Gson
-//import com.google.gson.reflect.TypeToken
+import com.google.gson.Gson
 import java.io.*
-import java.lang.reflect.Type
 
 
 
@@ -16,7 +14,7 @@ import java.lang.reflect.Type
 class ItemList {
 
     private var items : ArrayList<Item>? = null
-    private val FILENAME = "items.dat" // Changed to .dat for object serialization
+    private val FILENAME = "items.json"
 
     fun setItems(item_list: ArrayList<Item>) {
         items = item_list
@@ -54,25 +52,26 @@ class ItemList {
     // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
 
 
-    fun loadItems(context: Context) {
-        val itemsFile = getItemsFile(context)
-
-        // 1. Open the file for reading
-        //      ObjectInputStream reads the object from the file
-        //      `use` ensures the file is closed immediately after use
-        var items: ArrayList<Item>? = ObjectInputStream(FileInputStream(itemsFile)).use {
-            // 2. Read the object from the file
-            //      objectInputStream.readObject() reads the object that was written to the file
-            it.readObject() as? ArrayList<Item>
-        }
-
-        if (items == null) {
-            println("Warning! `items` was loaded as `null`. This means either the user has no" +
-                    " items yet or that an error occurred.")
-        }
-
-        this.items = items
-    } // end loadItems()
+//    fun loadItems(context: Context) {
+//        val itemsFile = getItemsFile(context)
+//
+//        // 1. Open the file for reading
+//        //      ObjectInputStream reads the object from the file
+//        //      `use` ensures the file is closed immediately after use
+//        // TODO: Error originates from here! FIX!!!!!!!!
+//        var items: ArrayList<Item>? = ObjectInputStream(FileInputStream(itemsFile)).use {
+//            // 2. Read the object from the file
+//            //      objectInputStream.readObject() reads the object that was written to the file
+//            it.readObject() as? ArrayList<Item>
+//        }
+//
+//        if (items == null) {
+//            println("Warning! `items` was loaded as `null`. This means either the user has no" +
+//                    " items yet or that an error occurred.")
+//        }
+//
+//        this.items = items
+//    } // end loadItems()
 
     private fun getItemsFile(context: Context): File {
         val itemsFile = File(context.filesDir, FILENAME)
@@ -96,13 +95,13 @@ class ItemList {
     } // end getItemsFile
 
     // saves the items in a file in ArrayList<Item> format
-    fun saveItems(context: Context) {
-        val itemsFile = getItemsFile(context)
-
-        ObjectOutputStream(FileOutputStream(itemsFile)).use {
-            it.writeObject(this.items)
-        }
-    } // end saveItems()
+//    fun saveItems(context: Context) {
+//        val itemsFile = getItemsFile(context)
+//
+//        ObjectOutputStream(FileOutputStream(itemsFile)).use {
+//            it.writeObject(this.items)
+//        }
+//    } // end saveItems()
 
     fun filterItemsByStatus(status: String): ArrayList<Item> {
         val selectedItems = ArrayList<Item>()
@@ -125,3 +124,8 @@ class ItemList {
         return activeBorrowers
     }
 }
+
+/*
+ * We have to create a data class for Item so that Item can be converted to and from Json format
+ */
+data class ItemData(val title : String, val maker : String, val description : String, val dimensions : Dimensions)

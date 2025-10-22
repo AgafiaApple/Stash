@@ -1,6 +1,5 @@
 package com.example.sharingapp;
 
-import kotlinx.serialization.Serializable
 import java.util.UUID
 
 
@@ -29,6 +28,7 @@ class Contact(username : String,
 //        this.id = UUID.randomUUID().toString()
 //    }
 
+    @JvmName("getIdFlow")
     fun getId() : String {
         return this.id
     }
@@ -38,10 +38,12 @@ class Contact(username : String,
 //        this.id = id
 //    }
 
+    @JvmName("getUsernameFlow")
     fun getUsername() : String {
         return this.username
     }
 
+    @JvmName("getEmailFlow")
     fun getEmail() : String {
         return this.email
     }
