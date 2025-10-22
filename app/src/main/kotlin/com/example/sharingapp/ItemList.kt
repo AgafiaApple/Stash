@@ -4,6 +4,7 @@ package com.example.sharingapp
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.*
 
 
@@ -49,29 +50,13 @@ class ItemList {
         return items!!.size
     }
 
-    // I need to make this look like my ContactList code instead of the automatic Java => Kotlin translation
+    fun loadItems(context: Context) {
+        val gson = Gson()
+        val reader = getItemsFile(context).bufferedReader()
+        val listType = object : TypeToken<ArrayList<Item>>() {}.type
+        this.items = gson.fromJson(reader, listType)
+    }
 
-
-//    fun loadItems(context: Context) {
-//        val itemsFile = getItemsFile(context)
-//
-//        // 1. Open the file for reading
-//        //      ObjectInputStream reads the object from the file
-//        //      `use` ensures the file is closed immediately after use
-//        // TODO: Error originates from here! FIX!!!!!!!!
-//        var items: ArrayList<Item>? = ObjectInputStream(FileInputStream(itemsFile)).use {
-//            // 2. Read the object from the file
-//            //      objectInputStream.readObject() reads the object that was written to the file
-//            it.readObject() as? ArrayList<Item>
-//        }
-//
-//        if (items == null) {
-//            println("Warning! `items` was loaded as `null`. This means either the user has no" +
-//                    " items yet or that an error occurred.")
-//        }
-//
-//        this.items = items
-//    } // end loadItems()
 
     private fun getItemsFile(context: Context): File {
         val itemsFile = File(context.filesDir, FILENAME)
@@ -94,14 +79,12 @@ class ItemList {
         return itemsFile
     } // end getItemsFile
 
-    // saves the items in a file in ArrayList<Item> format
-//    fun saveItems(context: Context) {
-//        val itemsFile = getItemsFile(context)
-//
-//        ObjectOutputStream(FileOutputStream(itemsFile)).use {
-//            it.writeObject(this.items)
-//        }
-//    } // end saveItems()
+    fun saveItems(context: Context) {
+        val gson = Gson()
+        val writer = getItemsFile(context).bufferedWriter()
+        gson.toJson(this.items, writer)
+    }
+
 
     fun filterItemsByStatus(status: String): ArrayList<Item> {
         val selectedItems = ArrayList<Item>()
@@ -122,10 +105,6 @@ class ItemList {
             }
         }
         return activeBorrowers
-    }
-}
+    } // end getActiveBorrowers
 
-/*
- * We have to create a data class for Item so that Item can be converted to and from Json format
- */
-data class ItemData(val title : String, val maker : String, val description : String, val dimensions : Dimensions)
+} // end ItemList class

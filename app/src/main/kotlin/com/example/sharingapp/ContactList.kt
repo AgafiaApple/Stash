@@ -75,6 +75,7 @@ private val FILENAME = "contacts.json"
                     return i
                 }
             } // end for
+        return null
     } // end getIndex()
 
 
@@ -162,8 +163,3 @@ private val FILENAME = "contacts.json"
     } // end isUsernameAvailable
 
 } // end ContactList class
-
-///*
-// * We have to create a data class for Contact so that Contact can be converted to and from Json format
-// */
-//data class ContactData(val username : String, val email : String, val id : String)
