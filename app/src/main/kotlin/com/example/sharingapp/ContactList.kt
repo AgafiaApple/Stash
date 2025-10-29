@@ -1,13 +1,10 @@
 package com.example.sharingapp
 
-import android.R
 import android.content.Context
 import java.io.File
-import java.io.FileOutputStream
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
-import java.io.ObjectOutputStream
 import java.security.InvalidParameterException
 
 // TODO: you can get rid of some of the null checks by ensuring the default value for contacts is ArrayList<Contact>()
@@ -46,7 +43,7 @@ private val FILENAME = "contacts.json"
     fun deleteContact(contact : Contact) {
         // !! is used as a non-null assertion and will
         // throw a NullPointerException if this.contacts is null
-        val success = this.contacts!!.remove(contact)
+        val success = this.contacts.remove(contact)
 
         if (!success) {
             throw InvalidParameterException("The given contact is not in the list of contacts.")

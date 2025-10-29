@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
 
 class AddItemActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class AddItemActivity : AppCompatActivity() {
     private lateinit var photo: ImageView
     private var image: Bitmap? = null
     private lateinit var context: Context
+
+    private lateinit var save_button: Button
 
     // Activity Result Launcher for Taking Pictures
     private val takePictureLauncher =
@@ -44,6 +48,9 @@ class AddItemActivity : AppCompatActivity() {
         width = findViewById(R.id.width)
         height = findViewById(R.id.height)
         photo = findViewById(R.id.image_view)
+
+        // set the save_button so we can respond to the onClick event
+        save_button = findViewById(R.id.save_button)
 
         // Set default image
         photo.setImageResource(android.R.drawable.ic_menu_gallery)
@@ -95,13 +102,17 @@ class AddItemActivity : AppCompatActivity() {
         val item = Item(titleStr, makerStr, descriptionStr, dimensions, image)
 
         // Add item, save items, and navigate back to MainActivity
-        item_list.addItem(item)
-        item_list.saveItems(context)
+        save_button.setOnClickListener {
+            Log.d("BUTTONS", "User clicked the save button within activity_add_item.xml")
+            item_list.addItem(item)
+            item_list.saveItems(context)
+        }
 
         // Start MainActivity and finish this activity
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        finish() // Close AddItemActivity
+
+        finish()
     }
 
     fun addPhoto(view: View) {

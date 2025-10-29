@@ -1,5 +1,3 @@
-// TODO: I need to have more safety checks in place for the possibility of `items` being null
-
 package com.example.sharingapp
 
 import android.content.Context
@@ -14,31 +12,31 @@ import java.io.*
  */
 class ItemList {
 
-    private var items : ArrayList<Item>? = null
+    private var items : ArrayList<Item> = ArrayList<Item>()
     private val FILENAME = "items.json"
 
     fun setItems(item_list: ArrayList<Item>) {
-        items = item_list
+        this.items = item_list
     }
 
     fun getItems(): ArrayList<Item>? {
-        return items
+        return this.items
     }
 
     fun addItem(item: Item) {
-        items!!.add(item)
+        this.items.add(item)
     }
 
     fun deleteItem(item: Item) {
-        items!!.remove(item)
+        this.items.remove(item)
     }
 
     fun getItem(index: Int): Item {
-        return items!![index]
+        return this.items[index]
     }
 
     fun getIndex(item: Item): Int {
-        for ((index, i) in items!!.withIndex()) { // Use withIndex for cleaner iteration
+        for ((index, i) in this.items.withIndex()) { // Use withIndex for cleaner iteration
             if (item.id == i.id) { // Access id directly
                 return index
             }
@@ -47,7 +45,7 @@ class ItemList {
     }
 
     fun getSize(): Int {
-        return items!!.size
+        return this.items.size
     }
 
     fun loadItems(context: Context) {
@@ -81,14 +79,16 @@ class ItemList {
 
     fun saveItems(context: Context) {
         val gson = Gson()
-        val writer = getItemsFile(context).bufferedWriter()
+        val itemsFile = getItemsFile(context)
+        print("Saving new item to " + itemsFile.absolutePath)
+        val writer = itemsFile.bufferedWriter()
         gson.toJson(this.items, writer)
     }
 
 
     fun filterItemsByStatus(status: String): ArrayList<Item> {
         val selectedItems = ArrayList<Item>()
-        for (i in this.items!!) { // Simplified iteration
+        for (i in this.items) { // Simplified iteration
             if (i.status == status) { // Access status directly
                 selectedItems.add(i)
             }
@@ -98,7 +98,7 @@ class ItemList {
 
     fun getActiveBorrowers(): ArrayList<Contact> {
         val activeBorrowers = ArrayList<Contact>()
-        for (i in this.items!!) {
+        for (i in this.items) {
             val borrower = i.borrower
             if (borrower != null) {
                 activeBorrowers.add(borrower)
