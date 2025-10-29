@@ -19,7 +19,7 @@ class ItemList {
         this.items = item_list
     }
 
-    fun getItems(): ArrayList<Item>? {
+    fun getItems(): ArrayList<Item> {
         return this.items
     }
 

@@ -18,7 +18,7 @@ private val FILENAME = "contacts.json"
     }
 
     @JvmName("getContactsFlow")
-    fun getContacts() : ArrayList<Contact>?{
+    fun getContacts() : ArrayList<Contact>{
         return this.contacts
     }
 
@@ -51,7 +51,7 @@ private val FILENAME = "contacts.json"
 
     } // end deleteContact
 
-    fun getContact(idx : Int) : Contact? {
+    fun getContact(idx : Int) : Contact {
         if (idx < this.contacts.size) {
                val contact = this.contacts[idx]
                 return contact;
