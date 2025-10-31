@@ -10,21 +10,22 @@ import java.util.*
  * Item class
  */
 
-// TODO: fix this so it doesn't need the primary constructor
 class Item {
-    var title: String,
-    var maker: String,
-    var description: String,
-    var dimensions: Dimensions,
-    image: Bitmap?
+    lateinit var title: String
+    lateinit var maker: String
+    lateinit var description: String
+    lateinit var dimensions: Dimensions
 
 
     var status: String = "Available"
     var borrower: Contact? = null
     @Transient // This annotation is the equivalent of "transient" in Java
     var image: Bitmap? = null
+
+    // image_base64 is the string encoded version of the image
     var image_base64: String? = null
-    var id: String
+
+    lateinit var id: String
 
 
     // NOTE: in a completed application, each id would need to be unique
@@ -38,7 +39,7 @@ class Item {
 
     fun addImage(newImage: Bitmap?) {
         newImage?.let { // Use let for null-safe operation
-            image = it
+            this.image = it
             val byteArrayBitmapStream = ByteArrayOutputStream()
             it.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream)
             val b = byteArrayBitmapStream.toByteArray()
@@ -46,7 +47,6 @@ class Item {
         }
     }
 
-    @JvmName("getImageFlow")
     fun getImage(): Bitmap? {
         if (image == null && image_base64 != null) {
             val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
@@ -55,36 +55,34 @@ class Item {
         return image
     }
 
-    @JvmName("getDescriptionFlow")
     fun getDescription() : String {
         return this.description
     }
 
 
-    @JvmName("getTitleFlow")
     fun getTitle() : String {
         return this.title
     }
 
-    @JvmName("getMakerFlow")
     fun getMaker() : String {
         return this.maker
     }
 
-    @JvmName("getDimensionsFlow")
     fun getDimensions() : Dimensions {
         return this.dimensions
     }
 
-    @JvmName("getBorrowerFlow")
     fun getBorrower() : Contact? {
         return this.borrower
     }
 
-    @JvmName("getStatusFlow")
     fun getStatus() : String {
         return this.status
     }
 }
 
-data class ItemData(val title : String, val maker : String, val description : String, val dims : DimensionsData)
+data class ItemData(val title : String,
+                    val maker : String,
+                    val description : String,
+                    val dims : DimensionsData,
+                    val image_base64 : String?)

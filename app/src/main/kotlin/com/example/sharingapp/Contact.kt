@@ -3,51 +3,45 @@ package com.example.sharingapp;
 import java.util.UUID
 
 
-class Contact(username : String,
-              email : String,
-              id : String?) : java.io.Serializable {
+class Contact {
 
-    final var username : String
-    final var email : String
-    var id = id ?: UUID.randomUUID().toString()
+    var username : String? = null
+    var email : String? = null
+
+    // TODO: when you get the database up, check to ensure that the id is not used by anyone else; alternatively, you could just use a automatically updating index as a key
+    var id = UUID.randomUUID().toString()
 
 
-    init {
-        // TODO: if both email and username are invalid, Error should account for that so caller knows what to show the user
-        if (!email.contains("@")) {
-            throw IllegalArgumentException("Email must be a valid email")
-        }
-        this.email = email
 
-        // TODO: check for valid username
-        this.username = username
-    } // end init
-
-// commenting out because it is unnecessary
-//    fun setId() {
-//        this.id = UUID.randomUUID().toString()
-//    }
-
-    @JvmName("getIdFlow")
     fun getId() : String {
         return this.id
     }
 
-// commenting out because it is unnecessary
-//    fun updateId(id : String) {
-//        this.id = id
-//    }
+    fun setUsername(username : String) {
+        if (this.username == null) {
 
-    @JvmName("getUsernameFlow")
+            this.username = username
+        }
+    }
     fun getUsername() : String {
-        return this.username
+        return this.username!! // !! for null check
     }
 
-    @JvmName("getEmailFlow")
+    fun setEmail(email : String) {
+
+        if (this.email == null) {
+            if (!email.contains("@")) {
+                throw IllegalArgumentException("Email must be a valid email")
+            }
+            this.email = email
+        }
+    } // end setEmail
     fun getEmail() : String {
-        return this.email
+        return this.email!!
     }
 
 
 
 } // end Contact class
+
+data class ContactData(val username : String, val email : String, val id : String)

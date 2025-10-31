@@ -160,3 +160,5 @@ private val FILENAME = "contacts.json"
     } // end isUsernameAvailable
 
 } // end ContactList class
+
+data class ContactListData(val contacts : ArrayList<ContactData>)
