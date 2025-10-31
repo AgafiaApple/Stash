@@ -12,6 +12,7 @@ import java.io.*
  */
 class ItemList {
 
+
     private var items = ArrayList<Item>()
     private val FILENAME = "items.json"
 
@@ -143,3 +144,9 @@ class ItemList {
     } // end getActiveBorrowers
 
 } // end ItemList class
+
+/*
+ * Item List data class for serialization/deserialization purposes
+ */
+
+data class ItemListData(val items: ArrayList<ItemData>)

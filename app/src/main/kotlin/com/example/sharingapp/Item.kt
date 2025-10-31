@@ -9,13 +9,15 @@ import java.util.*
 /**
  * Item class
  */
-class Item(
+
+// TODO: fix this so it doesn't need the primary constructor
+class Item {
     var title: String,
     var maker: String,
     var description: String,
     var dimensions: Dimensions,
     image: Bitmap?
-) : java.io.Serializable {
+
 
     var status: String = "Available"
     var borrower: Contact? = null
@@ -24,10 +26,6 @@ class Item(
     var image_base64: String? = null
     var id: String
 
-    init { // This is the primary constructor's body
-        addImage(image)
-        this.id = UUID.randomUUID().toString()
-    }
 
     // NOTE: in a completed application, each id would need to be unique
     fun setId() {
@@ -88,3 +86,5 @@ class Item(
         return this.status
     }
 }
+
+data class ItemData(val title : String, val maker : String, val description : String, val dims : DimensionsData)
