@@ -57,7 +57,7 @@ class AddItemActivity : AppCompatActivity() {
 
         // Initialize context and load items
         context = applicationContext
-        item_list.loadItems(context)
+        item_list.initializeItemList(context)
     }
 
     fun saveItem(view: View) {
@@ -102,11 +102,14 @@ class AddItemActivity : AppCompatActivity() {
         val item = Item(titleStr, makerStr, descriptionStr, dimensions, image)
 
         // Add item, save items, and navigate back to MainActivity
-        save_button.setOnClickListener {
-            Log.d("BUTTONS", "User clicked the save button within activity_add_item.xml")
-            item_list.addItem(item)
-            item_list.saveItems(context)
-        }
+        // TODO: error with implmentation here! itemlist is not saved because the code is not gone into
+//        save_button.setOnClickListener {
+//            Log.d("BUTTONS", "User clicked the save button within activity_add_item.xml")
+//            item_list.addItem(item)
+//            item_list.saveItems(context)
+//        }
+        item_list.addItem(item)
+        item_list.saveItems()
 
         // Start MainActivity and finish this activity
         val intent = Intent(this, MainActivity::class.java)

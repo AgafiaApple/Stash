@@ -28,7 +28,7 @@ class ContactsActivity : AppCompatActivity() {
 
         val context = getApplicationContext()
         contactList.loadContacts(context)
-        itemList.loadItems(context)
+        itemList.initializeItemList(context)
 
         myContacts = findViewById<ListView>(R.id.my_contacts)!!
         adapter = ContactAdapter(this@ContactsActivity, contactList.getContacts()!!)

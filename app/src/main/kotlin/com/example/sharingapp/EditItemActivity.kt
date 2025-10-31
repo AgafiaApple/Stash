@@ -59,7 +59,7 @@ class EditItemActivity : AppCompatActivity() {
         invisible.setVisibility(View.GONE);
 
         context = getApplicationContext();
-        item_list.loadItems(context);
+        item_list.initializeItemList(context);
         contact_list.loadContacts(context);
 
         var adapter = ArrayAdapter<String>(
@@ -136,7 +136,7 @@ class EditItemActivity : AppCompatActivity() {
     fun deleteItem(view : View) {
         item_list.deleteItem(item)
 
-        item_list.saveItems(context)
+        item_list.saveItems()
 
         // end EditItemActivity
         // Intent() requires a kotlin class
@@ -206,7 +206,7 @@ class EditItemActivity : AppCompatActivity() {
 
         item_list.addItem(updated_item)
 
-        item_list.saveItems(context)
+        item_list.saveItems()
 
 
         // End EditItemActivity

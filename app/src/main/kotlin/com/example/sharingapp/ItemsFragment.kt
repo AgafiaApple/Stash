@@ -26,13 +26,14 @@ abstract class ItemsFragment : Fragment() {
     private var container: ViewGroup? = null
     private var context: Context? = null
 
+    // TODO: What does this do??? Why is context assigned to itself?
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         context = context // or getContext()
-        item_list.loadItems(requireContext()) // Non-null assertion
+        item_list.initializeItemList(requireContext())
         this.inflater = inflater
         this.container = container
 

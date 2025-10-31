@@ -26,7 +26,7 @@ class Item(
 
     init { // This is the primary constructor's body
         addImage(image)
-        this.id = UUID.randomUUID().toString() // Use Elvis operator for null check and default value
+        this.id = UUID.randomUUID().toString()
     }
 
     // NOTE: in a completed application, each id would need to be unique

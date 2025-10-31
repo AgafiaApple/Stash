@@ -12,11 +12,81 @@ import java.io.*
  */
 class ItemList {
 
-    private var items : ArrayList<Item> = ArrayList<Item>()
+    private var items = ArrayList<Item>()
     private val FILENAME = "items.json"
 
-    fun setItems(item_list: ArrayList<Item>) {
-        this.items = item_list
+    private lateinit var itemsFile : File
+    val temp_first_item = Item("0", "0", "0", Dimensions("0", "0", "0"), null)
+
+
+    fun initializeItemList(context: Context) {
+        // the first line is necessary for loading the items from the JSON file because
+            // .fromJason() does not allow you to write an empty or null ArrayList into it
+        this.items.add(this.temp_first_item)
+
+        this.initializeItemsFile(context)
+        // loads the previously saved list of items
+        this.loadItems()
+    }
+
+    // to ensure that the file is initialized as a Json file storing an ArrayList
+    fun initializeItemsFile(context: Context) {
+        // checking specifically if it has not been initialized since
+            // we cannot use this.items == null if it has not been initialized
+        if (!this::itemsFile.isInitialized) {
+
+            this.itemsFile = File(context.filesDir, FILENAME)
+
+            // ensure the file path exists
+            if (!this.itemsFile.exists()) {
+                this.itemsFile.createNewFile()
+            } else {
+                println("this.itemsFile already exists.")
+            }
+
+            // Check if the file is empty
+            val gson = Gson()
+            val reader = this.itemsFile.bufferedReader()
+            val listType = object : TypeToken<ArrayList<Item>>() {} // removed the .type from the end
+
+            // items_temp will be null if the file is empty or contains invalid data
+            val items_temp : ArrayList<Item>? = gson.fromJson(reader, listType)
+
+            // if the file is empty, then initialize it with this.items
+            if (items_temp == null) {
+                println("Saving the initial ArrayList<Item> in the file...")
+                val writer = this.itemsFile.bufferedWriter()
+                gson.toJson(this.items, writer) // throws an exception if a problem writing occurs
+                println("itemsFile has been successfully initialized with this.items, an ArrayList")
+            } else {
+                println("itemsFile already contains ArrayList data.")
+            }
+
+        } else if (!this.itemsFile.exists()) {
+            throw FileNotFoundException("this.itemsFile has been initialized but this.itemsFile's file path does not exist.")
+
+        } else {
+            println("this.itemsFile has already been initialized, and the file path is valid.")
+        }
+    }
+
+    // must be called after initializeItemsFile method
+    fun loadItems() {
+        // data is stored in JSON format, so we need to load it back into ArrayList<Item> format
+        val gson = Gson()
+        val reader = this.itemsFile.bufferedReader()
+        val listType = object : TypeToken<ArrayList<Item>>() {}
+        this.items = gson.fromJson(reader, listType)
+        assert(this.items != null)
+    }
+
+
+
+    fun saveItems() {
+        val gson = Gson()
+        print("Saving new item to " + this.itemsFile.absolutePath)
+        val writer = this.itemsFile.bufferedWriter()
+        gson.toJson(this.items, writer)
     }
 
     fun getItems(): ArrayList<Item> {
@@ -24,6 +94,8 @@ class ItemList {
     }
 
     fun addItem(item: Item) {
+        assert(this.items != null)
+        assert(item != null)
         this.items.add(item)
     }
 
@@ -46,43 +118,6 @@ class ItemList {
 
     fun getSize(): Int {
         return this.items.size
-    }
-
-    fun loadItems(context: Context) {
-        val gson = Gson()
-        val reader = getItemsFile(context).bufferedReader()
-        val listType = object : TypeToken<ArrayList<Item>>() {}.type
-        this.items = gson.fromJson(reader, listType)
-    }
-
-
-    private fun getItemsFile(context: Context): File {
-        val itemsFile = File(context.filesDir, FILENAME)
-
-        if (!itemsFile.exists()) {
-            try {
-                if (itemsFile.createNewFile()) {
-                    println("File created: ${itemsFile.absolutePath}")
-                } else {
-                    println("File already exists - check for errors")
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                println("Error creating file ${e.message}")
-            }
-        } else {
-            println("File already exists: ${itemsFile.absolutePath}")
-        }
-
-        return itemsFile
-    } // end getItemsFile
-
-    fun saveItems(context: Context) {
-        val gson = Gson()
-        val itemsFile = getItemsFile(context)
-        print("Saving new item to " + itemsFile.absolutePath)
-        val writer = itemsFile.bufferedWriter()
-        gson.toJson(this.items, writer)
     }
 
 
