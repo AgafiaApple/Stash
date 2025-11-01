@@ -3,16 +3,14 @@ package com.example.sharingapp
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import java.io.*
-
-
 
 /**
  * ItemList class
  */
 class ItemList {
-
-
     private var items = ArrayList<Item>()
     private val FILENAME = "items.json"
 
@@ -143,10 +141,37 @@ class ItemList {
         return activeBorrowers
     } // end getActiveBorrowers
 
+    fun toJson() {
+        // convert the ItemList to a ItemListData object
+
+        // use the ItemListData object's toJson
+
+        // save to a .json file
+    }
+
+    fun fromJson() {
+        // read a string from items.json file
+
+        // convert the String object into an ItemListData object
+
+        // create an empty ItemList object
+
+        // turn each ItemData object into an Item object and store in the ItemList object
+    }
+
 } // end ItemList class
+
 
 /*
  * Item List data class for serialization/deserialization purposes
  */
-
+@Serializable
 data class ItemListData(val items: ArrayList<ItemData>)
+
+object JsonifyItemListData : Jsonify<ItemListData> {
+    override val serializer : KSerializer<ItemListData> = ItemListData.serializer()
+
+    override fun toJson(item : ItemListData) : String {
+        return super.toJson(item)
+    }
+}

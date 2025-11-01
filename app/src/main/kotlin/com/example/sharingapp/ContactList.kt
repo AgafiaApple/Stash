@@ -4,6 +4,8 @@ import android.content.Context
 import java.io.File
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import java.io.IOException
 import java.security.InvalidParameterException
 
@@ -161,4 +163,17 @@ private val FILENAME = "contacts.json"
 
 } // end ContactList class
 
+@Serializable
 data class ContactListData(val contacts : ArrayList<ContactData>)
+
+object JsonifyContactListData : Jsonify<ContactListData> {
+    override val serializer: KSerializer<ContactListData> = ContactListData.serializer()
+
+    override fun toJson(item: ContactListData): String {
+        return super.toJson(item)
+    }
+
+    override fun fromJson(data : String) : ContactListData {
+        return super.fromJson(data)
+    }
+}

@@ -3,6 +3,8 @@ package com.example.sharingapp
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -59,11 +61,26 @@ class Item(var title: String, var maker: String, var description: String,
         }
     }
 
-}
+} // end Item class
 
 
+@Serializable
 data class ItemData(val title : String,
                     val maker : String,
                     val description : String,
-                    val dims : DimensionsData,
+                    val dims : Dimensions,
                     val image_base64 : String?)
+
+
+
+// for converting to and from ItemData to the Json format the file data will be stored in
+object JsonifyItemData : Jsonify<ItemData> {
+    override val serializer: KSerializer<ItemData> = ItemData.serializer()
+
+    override fun toJson(item: ItemData): String {
+        return super.toJson(item)
+    }
+    override fun fromJson(data : String): ItemData {
+        return super.fromJson(data)
+    }
+}

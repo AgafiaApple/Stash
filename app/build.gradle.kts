@@ -6,6 +6,10 @@ plugins {
     // necessary for FireStore database
     id("com.google.gms.google-services")
 
+    // next two lines necessary for the Jsonify interface
+    kotlin("plugin.serialization") version "2.2.21"
+
+
 //    id("com.android.application")
 //    id("kotlin-android")
 }
@@ -46,6 +50,9 @@ android {
 }
 
 dependencies {
+    // this line is necessarry for the Jsonify interface
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
