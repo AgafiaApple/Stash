@@ -29,16 +29,16 @@ class EditContactActivity : AppCompatActivity() {
         val intent = intent
         val pos = intent.getIntExtra("position", 0)
 
-        if (contactList.contacts == null) {
-            contactList.setContacts(ArrayList<Contact>())
-        }
+//        if (contactList.contacts == null) {
+//            contactList.setContacts(ArrayList<Contact>())
+//        }
         contact = contactList.getContact(pos)
 
         username = findViewById(R.id.username)
         email = findViewById(R.id.email)
 
-        username.setText(contact!!.getUsername())
-        email.setText(contact!!.getEmail())
+        username.setText(contact!!.username)
+        email.setText(contact!!.email)
     }
 
     fun saveContact(view: View) {
@@ -62,12 +62,12 @@ class EditContactActivity : AppCompatActivity() {
 
         // Check that username is unique AND username is changed (Note: if username was not changed
         // then this should be fine, because it was already unique.)
-        if (!contactList.isUsernameAvailable(usernameStr) && !(contact!!.getUsername() == usernameStr)) {
+        if (!contactList.isUsernameAvailable(usernameStr) && !(contact!!.username == usernameStr)) {
             username.error = "Username already taken!"
             return
         }
 
-        val updatedContact = Contact(usernameStr, emailStr, id)
+        val updatedContact = Contact(usernameStr, emailStr)
 
         contactList.addContact(updatedContact)
         contactList.saveContacts(context)
@@ -76,7 +76,7 @@ class EditContactActivity : AppCompatActivity() {
         finish()
     }
 
-    // TODO: delete the `view` parameter and/or find out why it was in the Java code to begin with
+    // TODO: find out why the view parameter is in the Java code
     fun deleteContact(view: View) {
 
         contactList.deleteContact(contact!!)

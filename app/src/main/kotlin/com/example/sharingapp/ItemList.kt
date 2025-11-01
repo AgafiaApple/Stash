@@ -17,7 +17,7 @@ class ItemList {
     private val FILENAME = "items.json"
 
     private lateinit var itemsFile : File
-    val temp_first_item = Item("0", "0", "0", Dimensions("0", "0", "0"), null)
+    val temp_first_item = Item("0", "0", "0", Dimensions("0", "0", "0"))
 
 
     fun initializeItemList(context: Context) {
@@ -78,7 +78,7 @@ class ItemList {
         val reader = this.itemsFile.bufferedReader()
         val listType = object : TypeToken<ArrayList<Item>>() {}
         this.items = gson.fromJson(reader, listType)
-        assert(this.items != null)
+//        assert(this.items != null)
     }
 
 

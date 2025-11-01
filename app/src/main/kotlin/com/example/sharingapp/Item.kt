@@ -9,33 +9,45 @@ import java.util.*
 /**
  * Item class
  */
+class Item(var title: String, var maker: String, var description: String,
+           var dimensions: Dimensions
+) {
 
-class Item {
-    lateinit var title: String
-    lateinit var maker: String
-    lateinit var description: String
-    lateinit var dimensions: Dimensions
-
+//    // companion object is like a static variables
+//    companion object {
+//        // use next_key for knowing what the id of the item should be
+//        var next_key = 1 // first item created will have key equal to 1
+//        fun incrementKey() {
+//            next_key = next_key + 1}
+//    }
 
     var status: String = "Available"
     var borrower: Contact? = null
+
     @Transient // This annotation is the equivalent of "transient" in Java
     var image: Bitmap? = null
+        get() {
+            if (image == null && image_base64 != null) {
+                val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
+                val return_image = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
+                return return_image
+            }
+            return image
+        }
 
     // image_base64 is the string encoded version of the image
     var image_base64: String? = null
 
-    lateinit var id: String
+    var id: String
 
-
-    // NOTE: in a completed application, each id would need to be unique
-    fun setId() {
+    // set the id and increment the id to the next one
+    // TODO: make this correspond to the database key/id
+    init {
+//        this.id = UUID.randomUUID().toString()
         this.id = UUID.randomUUID().toString()
+
     }
 
-    fun updateId(id: String) {
-        this.id = id
-    }
 
     fun addImage(newImage: Bitmap?) {
         newImage?.let { // Use let for null-safe operation
@@ -47,39 +59,8 @@ class Item {
         }
     }
 
-    fun getImage(): Bitmap? {
-        if (image == null && image_base64 != null) {
-            val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
-            image = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
-        }
-        return image
-    }
-
-    fun getDescription() : String {
-        return this.description
-    }
-
-
-    fun getTitle() : String {
-        return this.title
-    }
-
-    fun getMaker() : String {
-        return this.maker
-    }
-
-    fun getDimensions() : Dimensions {
-        return this.dimensions
-    }
-
-    fun getBorrower() : Contact? {
-        return this.borrower
-    }
-
-    fun getStatus() : String {
-        return this.status
-    }
 }
+
 
 data class ItemData(val title : String,
                     val maker : String,

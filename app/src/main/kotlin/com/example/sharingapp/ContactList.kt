@@ -29,7 +29,7 @@ private val FILENAME = "contacts.json"
 
         // enter while loop if iter is NOT null
         while(iter.hasNext()) {
-            str_arr.add(iter.next().getUsername())
+            str_arr.add(iter.next().username)
         }
 
         return str_arr
@@ -68,7 +68,7 @@ private val FILENAME = "contacts.json"
     // checks this.contacts
     fun getIndex(contact : Contact) : Int? {
         for (i in this.contacts.indices) {
-                if (this.contacts[i].getUsername().equals(contact.getUsername())) {
+                if (this.contacts[i].username.equals(contact.username)) {
                     return i
                 }
             } // end for
@@ -82,7 +82,7 @@ private val FILENAME = "contacts.json"
         // enter while loop if iter is NOT null
         while(iter.hasNext()) {
             val contact = iter.next()
-            if (contact.getUsername().equals(username)) {
+            if (contact.username.equals(username)) {
                 return true
             }
         }
@@ -97,7 +97,7 @@ private val FILENAME = "contacts.json"
         // enter while loop if iter is NOT null
         while(iter.hasNext()) {
             val contact = iter.next()
-            if (contact.getUsername().equals(username)) {
+            if (contact.username.equals(username)) {
                 return contact
             }
         } // end while
@@ -149,9 +149,9 @@ private val FILENAME = "contacts.json"
         val iter = this.contacts.listIterator()
 
         // enter while loop if iter is NOT null
-        while(iter.hasNext()) {
+        while(iter.hasNext()) { // since I use this while loop a few times in this code, I should turn it into a method
             val contact = iter.next()
-            if (contact.getUsername().equals(username)) {
+            if (contact.username.equals(username)) {
                 return false
             }
         }

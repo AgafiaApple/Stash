@@ -75,7 +75,7 @@ class EditItemActivity : AppCompatActivity() {
 
         item = item_list.getItem(pos)
 
-        val contact = item.getBorrower()
+        val contact = item.borrower
 
         if (contact != null) {
             val contact_pos = contact_list.getIndex(contact)
@@ -84,25 +84,26 @@ class EditItemActivity : AppCompatActivity() {
             borrower_spinner.setSelection(contact_pos!!)
         }
 
-        title.setText(item.getTitle())
-        maker.setText(item.getMaker())
-        description.setText(item.getDescription())
+        title.setText(item.title)
+        maker.setText(item.maker)
+        description.setText(item.description)
 
-        val dimensions = item.getDimensions()
+        val dimensions = item.dimensions
 
-        length.setText(dimensions.getLength())
-        width.setText(dimensions.getWidth())
-        height.setText(dimensions.getHeight())
+        length.setText(dimensions.length)
+        width.setText(dimensions.width)
+        height.setText(dimensions.height)
 
-        val status_str = item.getStatus()
+        val status_str = item.status
         if (status_str.equals("Borrowed")) {
             status.setChecked(false)
         } else {
+            // the yellow warnings for setVisibility mean I should declare the functionality as `\t set() = ...` under the field
             borrower_tv.setVisibility(View.GONE)
             borrower_spinner.setVisibility(View.GONE)
         }
 
-        image = item.getImage()
+        image = item.image
         if (image != null) {
             photo.setImageBitmap(image)
         } else {
@@ -196,7 +197,10 @@ class EditItemActivity : AppCompatActivity() {
         val id = item.id // Reuse the item id
         item_list.deleteItem(item)
 
-        val updated_item = Item(title_str, maker_str, description_str, dimensions, image)
+        val updated_item = Item(title_str, maker_str, description_str, dimensions)
+        if (image != null) {
+            updated_item.addImage(image)
+        }
 
         val checked = status.isChecked()
         if (!checked) {

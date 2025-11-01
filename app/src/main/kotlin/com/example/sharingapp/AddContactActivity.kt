@@ -21,7 +21,6 @@ class AddContactActivity : AppCompatActivity() {
         email = findViewById<EditText>(R.id.email)
         context = applicationContext
         contactList.loadContacts(context)
-
     }
 
     fun saveContact(view : View) {
@@ -47,7 +46,7 @@ class AddContactActivity : AppCompatActivity() {
             return;
         }
 
-        val contact = Contact(username_str, email_str, null)
+        val contact = Contact(username_str, email_str)
 
         contactList.addContact(contact)
         contactList.saveContacts(context)

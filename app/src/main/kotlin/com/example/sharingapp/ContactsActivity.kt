@@ -50,7 +50,7 @@ class ContactsActivity : AppCompatActivity() {
 
                 // Prevent contact from editing an "active" borrower.
                 if (activeBorrowersList.getContacts() != null) {
-                    if (activeBorrowersList.hasContactByUsername(contact!!.getUsername())) {
+                    if (activeBorrowersList.hasContactByUsername(contact!!.username)) {
                         val text: CharSequence = "Cannot edit or delete active borrower!"
                         val duration = Toast.LENGTH_SHORT
                         Toast.makeText(context, text, duration).show()

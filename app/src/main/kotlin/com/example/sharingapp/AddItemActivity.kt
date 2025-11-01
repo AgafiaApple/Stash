@@ -99,7 +99,11 @@ class AddItemActivity : AppCompatActivity() {
         val dimensions = Dimensions(lengthStr, widthStr, heightStr)
 
         // Create Item object
-        val item = Item(titleStr, makerStr, descriptionStr, dimensions, image)
+        val item = Item(titleStr, makerStr, descriptionStr, dimensions)
+        if (image != null) {
+            item.addImage(image)
+        }
+
 
         // Add item, save items, and navigate back to MainActivity
         // TODO: error with implmentation here! itemlist is not saved because the code is not gone into
@@ -119,6 +123,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun addPhoto(view: View) {
+        // TODO: make the photo actually save in the item
         // Launch the camera using the Activity Result Launcher
         takePictureLauncher.launch(null)
     }
