@@ -3,25 +3,20 @@ package com.example.sharingapp
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import com.google.gson.JsonIOException
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import org.json.JSONException
+import java.io.BufferedWriter
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-/**
+/*
  * Item class
  */
 class Item(var title: String, var maker: String, var description: String,
            var dimensions: Dimensions
 ) {
-
-//    // companion object is like a static variables
-//    companion object {
-//        // use next_key for knowing what the id of the item should be
-//        var next_key = 1 // first item created will have key equal to 1
-//        fun incrementKey() {
-//            next_key = next_key + 1}
-//    }
 
     var status: String = "Available"
     var borrower: Contact? = null
@@ -29,12 +24,7 @@ class Item(var title: String, var maker: String, var description: String,
     @Transient // This annotation is the equivalent of "transient" in Java
     var image: Bitmap? = null
         get() {
-            if (image == null && image_base64 != null) {
-                val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
-                val return_image = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
-                return return_image
-            }
-            return image
+            return base64ToBitmap(this.image_base64)
         }
 
     // image_base64 is the string encoded version of the image
@@ -51,6 +41,7 @@ class Item(var title: String, var maker: String, var description: String,
     }
 
 
+
     fun addImage(newImage: Bitmap?) {
         newImage?.let { // Use let for null-safe operation
             this.image = it
@@ -60,6 +51,58 @@ class Item(var title: String, var maker: String, var description: String,
             image_base64 = Base64.encodeToString(b, Base64.DEFAULT)
         }
     }
+
+    fun toJsonString() : String {
+        // convert the Item to a ItemData object
+        val itemData = ItemData(this.title,
+            this.maker,
+            this.description,
+            this.dimensions,
+            this.image_base64)
+
+        // use the ItemData object's toJson
+        val jsonStr = JsonifyItemData.toJson(itemData)
+
+        return jsonStr
+    }
+
+    // companion object is like a place to store static variables/functions
+    companion object {
+        fun base64ToBitmap(image_base64 : String?) : Bitmap? {
+            if (image_base64 != null) {
+                val decodeString = Base64.decode(image_base64, Base64.DEFAULT)
+                val return_image = BitmapFactory.decodeByteArray(decodeString, 0, decodeString.size)
+                return return_image
+            }
+            return null
+        }
+
+        // converts a string into Json format 
+        fun fromJsonString(str : String) : Item {
+            lateinit var dataItem : ItemData
+            try {
+                dataItem = JsonifyItemData.fromJson(str)
+            } catch(e : Exception) {
+                println("An Exception occurred when attempting json to object conversion" + e.message)
+            }
+
+            val img_base64 = dataItem.image_base64
+            val img = base64ToBitmap(img_base64)
+
+            val item = Item(dataItem.title,
+                dataItem.maker,
+                dataItem.description,
+                dataItem.dims)
+
+            if (img != null) {
+                item.image = img
+            }
+
+            return item
+        }
+    }
+
+
 
 } // end Item class
 

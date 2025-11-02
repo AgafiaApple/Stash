@@ -1,8 +1,6 @@
 package com.example.sharingapp
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import java.io.*
@@ -15,20 +13,18 @@ class ItemList {
     private val FILENAME = "items.json"
 
     private lateinit var itemsFile : File
-    val temp_first_item = Item("0", "0", "0", Dimensions("0", "0", "0"))
 
 
+    // the method that will be called in the activities when loading the items
     fun initializeItemList(context: Context) {
-        // the first line is necessary for loading the items from the JSON file because
-            // .fromJason() does not allow you to write an empty or null ArrayList into it
-        this.items.add(this.temp_first_item)
 
         this.initializeItemsFile(context)
+
         // loads the previously saved list of items
         this.loadItems()
     }
 
-    // to ensure that the file is initialized as a Json file storing an ArrayList
+
     fun initializeItemsFile(context: Context) {
         // checking specifically if it has not been initialized since
             // we cannot use this.items == null if it has not been initialized
@@ -39,28 +35,11 @@ class ItemList {
             // ensure the file path exists
             if (!this.itemsFile.exists()) {
                 this.itemsFile.createNewFile()
+
             } else {
                 println("this.itemsFile already exists.")
             }
-
-            // Check if the file is empty
-            val gson = Gson()
-            val reader = this.itemsFile.bufferedReader()
-            val listType = object : TypeToken<ArrayList<Item>>() {} // removed the .type from the end
-
-            // items_temp will be null if the file is empty or contains invalid data
-            val items_temp : ArrayList<Item>? = gson.fromJson(reader, listType)
-
-            // if the file is empty, then initialize it with this.items
-            if (items_temp == null) {
-                println("Saving the initial ArrayList<Item> in the file...")
-                val writer = this.itemsFile.bufferedWriter()
-                gson.toJson(this.items, writer) // throws an exception if a problem writing occurs
-                println("itemsFile has been successfully initialized with this.items, an ArrayList")
-            } else {
-                println("itemsFile already contains ArrayList data.")
-            }
-
+        // if initialized but the file does not exist
         } else if (!this.itemsFile.exists()) {
             throw FileNotFoundException("this.itemsFile has been initialized but this.itemsFile's file path does not exist.")
 
@@ -69,23 +48,13 @@ class ItemList {
         }
     }
 
-    // must be called after initializeItemsFile method
     fun loadItems() {
-        // data is stored in JSON format, so we need to load it back into ArrayList<Item> format
-        val gson = Gson()
-        val reader = this.itemsFile.bufferedReader()
-        val listType = object : TypeToken<ArrayList<Item>>() {}
-        this.items = gson.fromJson(reader, listType)
-//        assert(this.items != null)
+        this.items = this.fromJson()
     }
 
 
-
     fun saveItems() {
-        val gson = Gson()
-        print("Saving new item to " + this.itemsFile.absolutePath)
-        val writer = this.itemsFile.bufferedWriter()
-        gson.toJson(this.items, writer)
+        this.toJson()
     }
 
     fun getItems(): ArrayList<Item> {
@@ -142,22 +111,56 @@ class ItemList {
     } // end getActiveBorrowers
 
     fun toJson() {
-        // convert the ItemList to a ItemListData object
+        // to convert the ItemList to a ItemListData object, first make an ArrayList<ItemData> obj
+        val tempDataList = ArrayList<ItemData>()
+
+        this.items.forEach {
+           val tempDataItem = ItemData(it.title,
+               it.maker,
+               it.description,
+               it.dimensions,
+               it.image_base64)
+
+            tempDataList.add(tempDataItem)
+        }
+
+        // creating the ItemListData obj so we can write the data to the .json file
+        val dataList = ItemListData(tempDataList)
 
         // use the ItemListData object's toJson
+        val jsonStr = JsonifyItemListData.toJson(dataList)
 
         // save to a .json file
+        this.itemsFile.bufferedWriter().use {out -> // .use ensures the file closes regardless of success
+            out.write(jsonStr)
+        }
     }
 
-    fun fromJson() {
+
+    fun fromJson() : ArrayList<Item> {
+
         // read a string from items.json file
+        val jsonStr = itemsFile.bufferedReader().use {it.readText()}
 
         // convert the String object into an ItemListData object
+        val dataList = JsonifyItemListData.fromJson(jsonStr)
 
         // create an empty ItemList object
+        val itemList = ItemList()
 
         // turn each ItemData object into an Item object and store in the ItemList object
-    }
+        dataList.items.forEach {
+            val tempItem = Item(it.title,
+                it.maker,
+                it.description,
+                it.dims)
+
+            itemList.addItem(tempItem)
+
+        }
+
+        return itemList.items
+    } // end fromJson
 
 } // end ItemList class
 
