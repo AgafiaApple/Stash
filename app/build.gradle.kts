@@ -5,6 +5,10 @@ plugins {
     // essential for Firebase
     id("com.google.gms.google-services")
 
+    // next line necessary for the Jsonify interface
+    kotlin("plugin.serialization") version "2.2.21"
+
+
 }
 
 android {
