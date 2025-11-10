@@ -7,6 +7,9 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        compose=true
+    }
     namespace = "com.example.sharingapp"
     compileSdk {
         version = release(36)
@@ -38,6 +41,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
 }
 
 dependencies {
@@ -47,4 +53,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.runtime.rxjava2)
 }
