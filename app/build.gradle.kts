@@ -46,12 +46,17 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    // necessary for compose runtime
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 
 dependencies {
+    // this line is necessarry for the Jsonify interface
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
