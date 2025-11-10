@@ -91,8 +91,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.runtime.rxjava2)
 
-    // needed for using fragments
-
+    // The next two dependencies are needed for using fragments
 
     // Java language implementation
     implementation(libs.androidx.fragment)
