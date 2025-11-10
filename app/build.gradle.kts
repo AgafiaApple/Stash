@@ -55,7 +55,7 @@ android {
 
 dependencies {
     // this line is necessarry for the Jsonify interface
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
