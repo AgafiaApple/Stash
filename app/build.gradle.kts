@@ -86,6 +86,7 @@ dependencies {
     // needed for reading and writing json files
     implementation("com.google.code.gson:gson:2.13.2")
 
+    // needed for Compose
     implementation(libs.androidx.runtime)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.runtime.rxjava2)
