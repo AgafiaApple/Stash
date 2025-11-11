@@ -1,4 +1,4 @@
 package com.example.sharingapp
 
-class AllItemsFragment {
+class AllItemsFragment : ItemsFragment() {
 }

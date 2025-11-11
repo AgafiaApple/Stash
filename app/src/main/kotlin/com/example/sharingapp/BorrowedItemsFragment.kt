@@ -1,4 +1,6 @@
 package com.example.sharingapp
 
-class BorrowedItemsFragment {
+import androidx.fragment.app.Fragment
+
+class BorrowedItemsFragment : ItemsFragment() {
 }
