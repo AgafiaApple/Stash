@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: uncomment this when you figure out why findViewById is giving null
+        // TODO: use Compose instead of xml
 //        val viewPager : ViewPager2 = findViewById(R.layout.activity_main)
 
         // create the adapter that will return a fragment for each of the

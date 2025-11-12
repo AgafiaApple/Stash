@@ -1,18 +1,47 @@
 package com.example.sharingapp
 
-import kotlinx.serialization.KSerializer
+import android.util.Log
 import java.io.File
-import java.io.Serializable
+import com.google.gson.Gson
+import java.io.FileWriter
+import java.io.IOException
 
-/* Think of R as "return" and I as "intermediate"
- * The functions in JsonFileOps use an instance of I (a data class) that can be used
- *  with Jsonify
- * If R and I are compatible (e.g. R = Item, I = ItemData), then I is converted to
- * R and an instance of R is returned
-*/
-interface JsonFileOps<R, I : Jsonify<*>> { // `Jsonify<*>` means I can be anything that
-    fun fromJsonFile(file : File) : R
+/*
+ * Can be used to save the json Strings created by
+ * the Jsonify interface
+ */
+class JsonFileOps { // `Jsonify<*>` means I can be anything that
 
-    fun toJsonFile()
+    fun fromJsonFile(filepath : String) : String? {
+        try {
+            val file = File(filepath)
+            val gson = Gson()
+            val json_str = file.readText()
+
+            return json_str
+
+        } catch (e : IOException) {
+            Log.d(null, "IOException caught!!!"
+                    + " Returning `null`")
+
+            return null
+        }
+    } // end fromJson()
+
+    fun toJsonFile(filepath : String, json_str : String) : Boolean {
+        try {
+            val file = File(filepath)
+            val gson = Gson()
+            val writer = FileWriter(filepath)
+            gson.toJson(json_str, writer)
+
+            return true
+        } catch (e : IOException) {
+            Log.d(null, "IOException caught!!!"
+                    + " Returning `false`")
+            return false
+        }
+
+    } // end toJson()
 
 }

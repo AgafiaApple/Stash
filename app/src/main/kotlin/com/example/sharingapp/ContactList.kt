@@ -37,3 +37,9 @@ class ContactListConstructor {
         return ContactList(contacts=contacts)
     }
 }
+
+class JsonifyContactList : Jsonify<ContactList> {
+    // we can use .serializer() b/c ContactList is
+    // a @Serializable data class
+    override val serializer = ContactList.serializer()
+}

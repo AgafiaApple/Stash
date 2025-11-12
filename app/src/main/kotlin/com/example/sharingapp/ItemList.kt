@@ -52,3 +52,9 @@ class ItemListConstructor {
     } // end filterList()
 
 } // end ItemListConstructor
+
+class JsonifyItemList : Jsonify<ItemList> {
+    // we can use .serializer() b/c ItemList is
+    // a @Serializable data class
+    override val serializer = ItemList.serializer()
+}
