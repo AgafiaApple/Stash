@@ -15,9 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 
-abstract class ItemsFragment :  Fragment() {
+abstract class ItemsFragment(val item_list : ItemList) :  Fragment() {
 
-    val item_list = ItemList()
     var rootView: View? = null
     private var list_view: ListView? = null
     private var adapter: ArrayAdapter<Item>? = null

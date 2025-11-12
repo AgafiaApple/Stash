@@ -1,4 +1,11 @@
 package com.example.sharingapp
 
-class Contact {
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Contact(val username : String,
+    val email : String) {
+
+    // data class functionality
+    val id : Int get() = hashCode()
 }
