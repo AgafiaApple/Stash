@@ -9,6 +9,9 @@ plugins {
     kotlin("plugin.serialization") version "2.2.21"
 
 
+
+
+
 }
 
 android {
@@ -54,12 +57,16 @@ android {
 }
 
 dependencies {
+    // for being able to use the Material api
+    implementation("androidx.compose.material:material:1.9.4")
+
     // this line is necessarry for the Jsonify interface
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.foundation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
