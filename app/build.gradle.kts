@@ -57,6 +57,15 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.material3)
+    // needed to use setContent in MainActivity
+    val activity_version = "1.11.0"
+    implementation("androidx.activity:activity-compose:${activity_version}")
+    // Java language implementation
+    implementation("androidx.activity:activity:${activity_version}")
+    // Kotlin
+    implementation("androidx.activity:activity-ktx:${activity_version}")
+
     // for being able to use the Material api
     implementation("androidx.compose.material:material:1.9.4")
 
