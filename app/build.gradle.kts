@@ -54,10 +54,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+
 }
 
 dependencies {
     implementation(libs.androidx.material3)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit.junit)
     // needed to use setContent in MainActivity
     val activity_version = "1.11.0"
     implementation("androidx.activity:activity-compose:${activity_version}")
@@ -113,4 +116,6 @@ dependencies {
     implementation(libs.androidx.fragment)
     // Kotlin
     implementation(libs.androidx.fragment.ktx)
+
 }
+
