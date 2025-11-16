@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 
 
-abstract class ComposeItem {
+abstract class ComposeIcon {
     /*
      * ABSTRACT PROPERTIES that concrete subclasses must implement
     */
@@ -70,15 +70,15 @@ abstract class ComposeItem {
 
     companion object {
         /**
-         * Takes in a child object of the ComposeItem type
+         * Takes in a child object of the ComposeIcon type
          * and returns its image resource as an ImageVector
          */
 
         @Composable
-        fun asImageVector(composeItem: ComposeItem): ImageVector {
-            return ImageVector.vectorResource(composeItem.image)
+        fun asImageVector(composeIcon: ComposeIcon): ImageVector {
+            return ImageVector.vectorResource(composeIcon.image)
         }
     }
 
 
-} // end abstract class ComposeItem
+} // end abstract class ComposeIcon
