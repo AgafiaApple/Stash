@@ -193,7 +193,6 @@
         android:gravity="center"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimary"
         android:label="@string/image_icon"/>
 
     <LinearLayout

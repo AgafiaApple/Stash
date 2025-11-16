@@ -8,7 +8,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:orientation="vertical"
-    tools:context="com.example.sharingapp.MainActivity">
+    tools:context="com.example.sharingapp.MainActivity_draft">
 
     <ListView
         android:id="@+id/my_borrowed_items"

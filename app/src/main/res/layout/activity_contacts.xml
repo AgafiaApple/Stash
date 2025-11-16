@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:onClick="AddContactActivity"
-        android:background="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_input_add"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="0dp" />
