@@ -88,7 +88,10 @@ fun SharingAppApp() {
                     )
                 )
             }) { innerPadding ->
+            // TODO: set up navigation like in that video you watched on NavControllers
+                if (currentDestination == AppDestinations.CONTACTS) {
 
+                }
         }
     }
 }
