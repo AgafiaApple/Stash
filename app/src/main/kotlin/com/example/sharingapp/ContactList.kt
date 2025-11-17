@@ -1,6 +1,7 @@
 package com.example.sharingapp
 
 import android.util.Log
+import com.example.sharingapp.model.Contact
 import kotlinx.serialization.Serializable
 
 @Serializable

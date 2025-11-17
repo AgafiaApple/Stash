@@ -1,18 +1,29 @@
-package com.example.sharingapp
+package com.example.sharingapp.model
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.sharingapp.model.Contact
+import com.example.sharingapp.model.Dimensions
+import com.example.sharingapp.model.Status
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Entity // tells Room to create a table for this class called "Item"
 data class Item (val title: String,
             val maker: String,
             val description: String,
-            val dims : Dimensions) {
+            // we can use @Embedded instead of making a TypeConverter b/c Dimensions is a data class
+            @Embedded
+            val dims : Dimensions
 
-    // we can do this because our class is a data class
-    val id : Int get() = hashCode()
+) {
+
+    @PrimaryKey(autoGenerate=true)
+    val id : Long = 0
 
     var status = Status.AVAILABLE
 

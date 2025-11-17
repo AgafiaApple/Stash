@@ -1,4 +1,4 @@
-package com.example.sharingapp
+package com.example.sharingapp.model
 
 import kotlinx.serialization.Serializable
 
