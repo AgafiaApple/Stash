@@ -13,12 +13,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Entity // tells Room to create a table for this class called "Item"
-data class Item (val title: String,
-            val maker: String,
-            val description: String,
+data class Item (
+    var title: String,
+    var maker: String,
+    var description: String,
             // we can use @Embedded instead of making a TypeConverter b/c Dimensions is a data class
-            @Embedded
-            val dims : Dimensions
+    @Embedded
+    var dims : Dimensions
 
 ) {
 

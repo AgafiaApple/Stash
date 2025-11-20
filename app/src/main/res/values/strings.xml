@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sharing App</string>
+    <string name="app_name">Stash</string>
     <string name="title_hint">Title</string>
     <string name="maker_hint">Maker</string>
     <string name="description_hint">Description</string>

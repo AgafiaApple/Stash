@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.sharingapp.model.Dimensions
 import com.example.sharingapp.model.Item
+import com.example.sharingapp.model.Status
 
 const val ITEM_TABLE_NAME = "Item"
 
@@ -44,6 +45,9 @@ interface ItemDao {
 
     @Query("UPDATE " + ITEM_TABLE_NAME + " SET maker = :newMaker WHERE id = :itemId ")
     suspend fun updateMaker(itemId : Long, newMaker : String)
+
+    @Query("UPDATE " + ITEM_TABLE_NAME + " SET status = :newStatus WHERE id :itemId")
+    suspend fun updateStatus(itemId : Long, newStatus : Status)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addItem(item : Item) : Long // if the rowId (the returned Long) > -1, the insert is successful

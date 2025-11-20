@@ -26,6 +26,7 @@ With that said, **I would be very grateful for any critique on how the app can b
   * DAOs (Data access objects)
   * Thread-safety
 * Firebase 
+  * Cloud Firestore 
 
 ## Concepts Applied
 * [MVVM](https://www.geeksforgeeks.org/android/mvvm-model-view-viewmodel-architecture-pattern-in-android/#) Architecture

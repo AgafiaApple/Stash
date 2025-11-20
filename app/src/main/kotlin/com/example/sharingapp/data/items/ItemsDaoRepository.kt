@@ -33,7 +33,7 @@ class ItemsDaoRepository(private val itemDao : ItemDao) : ItemsRepository {
         itemId: Long,
         newStatus: Status
     ) {
-        itemDao.
+        itemDao.updateStatus(itemId, newStatus)
     }
 
     override suspend fun updateItemName(itemId: Long, newName: String) {

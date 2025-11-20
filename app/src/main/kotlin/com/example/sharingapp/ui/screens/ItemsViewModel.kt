@@ -9,7 +9,17 @@ import kotlinx.coroutines.launch
 // next two imports needed for `by`
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+// HomeUiState prototype
+data class HomeUiState(
+    val items : List<Item> = emptyList(),
+    val isLoading: Boolean = false
+)
 
 /**
  * The ItemsViewModel provides the data and operations that the corresponding View
@@ -22,23 +32,38 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     // `by` is a type of "delegated property" feature
     // under the hood, `by` does:
     //  private val _uiState: MutableState<List<Item>> = mutableStateOf(emptyList())
-    var uiState by mutableStateOf<List<Item>>(emptyList())
-        private set
+    private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
+    val uiState = _uiState.asStateFlow() // Note to self: why do we do this?
 
     init {
-        loadItems()
+        viewModelScope.launch {
+            // direct assignment for now
+            val items = repository.getItems()
+            _uiState.update { it.copy(items = items, isLoading = false)}
+        }
     }
+    // implement factory
+    companion object {
+        fun provideFactory(itemsRepository: ItemsRepository) : ViewModelProvider.Factory = {
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>) : T {
+                    return ItemsViewModel(itemsRepository) as T
+                }
+            }
+        } as ViewModelProvider.Factory
+    }
+
 
     /**
      * Uses a background thread to retrieve the items from the ItemsRepository.
      * This is called when initialized the ItemsViewModel
      */
-    fun loadItems() {
-        viewModelScope.launch {
-            // the operation "under the hood is _uiState.value = repository.getItems()
-            uiState = repository.getItems()
-        }
-    }
+//    fun loadItems() {
+//        viewModelScope.launch {
+//
+//        }
+//    }
 
     /**
      *
