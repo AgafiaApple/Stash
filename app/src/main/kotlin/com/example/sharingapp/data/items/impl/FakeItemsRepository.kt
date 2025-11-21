@@ -10,12 +10,12 @@ class FakeItemsRepository : ItemsRepository {
     private val items by lazy {
         mutableListOf(
             Item("Lawn Mower", "John Deere", "A well-loved grass-eating machine (rust warning)",
-                Dimensions(5, 2, 2)),
-            Item("A Big Sword", "Zabuza inc.", "It's really big.", Dimensions(7, 0, 0)),
+                Dimensions(5, 2, 2), 0),
+            Item("A Big Sword", "Zabuza inc.", "It's really big.", Dimensions(7, 0, 0), 1),
             Item("Flowbee", "Rick E. Hunts", "An innovative at-home haircutting system for the brave of heart.",
-                Dimensions(15, 8, 4)),
-            Item("French Fry Holder", "Yours Truly", "Down with the cups, in with the fries.",
-                Dimensions(1, 1, 1))
+                Dimensions(15, 8, 4), 2),
+            Item("French Fry Holder", "Yours Truly", "Down with the H20, in with the NaCl.",
+                Dimensions(1, 1, 1), 3)
         )
     }
 

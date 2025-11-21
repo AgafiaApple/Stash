@@ -19,12 +19,14 @@ data class Item (
     var description: String,
             // we can use @Embedded instead of making a TypeConverter b/c Dimensions is a data class
     @Embedded
-    var dims : Dimensions
+    var dims : Dimensions,
+    // idx will only be used for the fake item repository since FakeItemRepository does not use a Room database
+    val idx : Long? = null
 
 ) {
 
     @PrimaryKey(autoGenerate=true)
-    val id : Long = 0
+    val id : Long = idx ?: 0
 
     var status = Status.AVAILABLE
 
