@@ -1,7 +1,9 @@
 package com.example.sharingapp.ui
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +23,8 @@ fun AppNavGraph(
     isExpandedScreen: Boolean,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination : String = AppDestination.HOME.name
+    startDestination : String = AppDestination.HOME.name,
+    innerPadding : PaddingValues = PaddingValues()
 ) {
     NavHost(
         navController = navController,
@@ -42,9 +45,8 @@ fun AppNavGraph(
 
             ItemsScreen(
                 viewModel = itemsViewModel,
-                onNavigateToContacts = { navController.navigate(AppDestination.CONTACTS.name)
-                },
-                isExpandedScreen = tempIsExpandedScreen
+                isExpandedScreen = tempIsExpandedScreen,
+                innerPadding = innerPadding
             )
         } // end HOME/Items composable
 

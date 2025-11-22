@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.NavGraph
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sharingapp.ComposeIcon
@@ -66,19 +67,56 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
         /*
          * TODO: consider implementing Navigation layout element like ModelNavigationDrawer
          */
+        Scaffold(
+            topBar = {
+                AppTopBar(onNavigateToProfile = {
+                    navController.navigate(AppDestination.PROFILE.name) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
 
-        Row {
+                    }
+                }
+                ) // end AppTopBar
+            },
+            bottomBar = {
+                AppBottomBar(
+                    destinations = AppDestination.entries,
+                    currentDestination = currentRoute,
+                    onNavigateToDestination = { route ->
+                        navController.navigate(route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop =
+                                true // avoid having multiple copies of same destination
+                            restoreState =
+                                true // restore state when reselecting a previously selected item
+                        }
+                    }
+                )
+            } // end bottomBar setup
+        ) { innerPadding ->
+            Row {
 //            if (isExpandedScreen) {
 //                // TODO: adjust layout settings for larger screen sizes
 //            }
+                // pass controller and padding down to graph
 
-            AppNavGraph(
-                appContainer = appContainer,
-                isExpandedScreen = isExpandedScreen,
-                navController = navController,
-                // TODO: pass down any navigation elements that need to be passed down
-            )
+                AppNavGraph(
+                    appContainer = appContainer,
+                    isExpandedScreen = isExpandedScreen,
+                    navController = navController,
+                    // TODO: pass down any navigation elements that need to be passed down
+                    modifier = Modifier.padding(innerPadding) // applies the scaffold's padding
+                )
 
-        } // end Row block
-    }
-}
+            } // end Row block
+        }
+
+
+
+    } // end AppTheme block
+} // end SharingApp fun
