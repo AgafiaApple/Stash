@@ -34,12 +34,11 @@ fun ItemsScreen(
     innerPadding : PaddingValues
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    // TODO: some of this should be outside of the Items Screen since some of it is global
 
         LazyColumn(contentPadding = innerPadding) {
             items(uiState.items, key = { item -> item.id }) { item ->
                 // TODO: add to item row code here
-                ItemRow(item = item, onClick = { /* TODO: fill in later */ })
+                ItemRow(item = item, onClick = { /* TODO: brainstorm what design component to use for options and fill in later */ })
             }
         }
 

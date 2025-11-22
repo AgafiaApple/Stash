@@ -32,14 +32,13 @@ class ContactsViewModel(private val repository : ContactsRepository) : ViewModel
 
     // implement factory creator object
     companion object {
-        fun provideFactory(contactsRepository: ContactsRepository): ViewModelProvider.Factory = {
+        fun provideFactory(contactsRepository: ContactsRepository): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return ContactsViewModel(contactsRepository) as T
                 }
             }
-        } as ViewModelProvider.Factory
 
     }
 }
