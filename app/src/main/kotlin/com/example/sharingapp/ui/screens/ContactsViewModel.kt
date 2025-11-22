@@ -39,6 +39,5 @@ class ContactsViewModel(private val repository : ContactsRepository) : ViewModel
                     return ContactsViewModel(contactsRepository) as T
                 }
             }
-
     }
 }

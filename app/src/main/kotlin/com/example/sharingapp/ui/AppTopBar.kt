@@ -17,7 +17,7 @@ fun AppTopBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = "My Stash")
+            Text(text = "Your Stash")
         },
         actions = {
             // navigation button

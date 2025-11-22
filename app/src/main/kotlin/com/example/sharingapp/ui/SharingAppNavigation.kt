@@ -12,8 +12,8 @@ import com.example.sharingapp.ProfileIcon
  * Destinations used in the [SharingApp]
  */
 enum class AppDestination(val icon : ComposeIcon) {
-    HOME(HomeIcon()),
     CONTACTS(ContactsIcon()),
+    HOME(HomeIcon()),
     PROFILE(ProfileIcon())
 }
 

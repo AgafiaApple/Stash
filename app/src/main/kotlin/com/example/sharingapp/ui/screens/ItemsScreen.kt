@@ -25,6 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
 import com.example.sharingapp.model.Item
+import com.example.sharingapp.ui.utils.Dimens.Spacing
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,26 +37,34 @@ fun ItemsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        LazyColumn(contentPadding = innerPadding) {
-            items(uiState.items, key = { item -> item.id }) { item ->
-                // TODO: add to item row code here
-                ItemRow(item = item, onClick = { /* TODO: brainstorm what design component to use for options and fill in later */ })
+    // passing down innerPadding to ensure the app does not draw behind the the status bar and navigation
+    //   bar of the device's interface, ensuring the list starts and ends within the range of visibility
+    LazyColumn(contentPadding = innerPadding) {
+        items(uiState.items, key = { item -> item.id }) { item ->
+            // TODO: add to item row code here
+            ItemRow(item = item, onClick = { /* TODO: brainstorm what design component to use for options and fill in later */ })
             }
         }
 
 } // end ItemsScreen
 
 @Composable
-fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier ) { /* TODO: add onClick later */
+fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier ) {
 
-    // 1.
         Row(
-            modifier = Modifier.padding(vertical = 16.dp),  // TODO: complete later
+            modifier = Modifier.padding(vertical = Spacing.Medium),  // TODO: complete later
             verticalAlignment = Alignment.CenterVertically
         ) {
             // TODO: include icon or photo here
+                /*
+                 * Pseudo-code for icon/photo display
+                 *      if (item has image):
+                 *          use the image uploaded by the user
+                 *      else:
+                 *          use a default icon
+                 */
 
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.width(Spacing.Medium))
 
             // text content
             Column(modifier = Modifier.weight(1f)) {
@@ -69,6 +79,7 @@ fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier ) { 
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f)
                 )
             } // end inner column
+
         } // end Row
 
 

@@ -9,9 +9,9 @@ class FakeContactsRepository : ContactsRepository {
 
     private val contacts by lazy {
         mutableListOf(
-            Contact("DanTheDog", "dandog@gmail.com"),
-            Contact("PercyTheParrot", "percysquawks@proton.me"),
-            Contact("JustJenny", "jenny_8675309@gmail.com")
+            Contact("DanTheDog", "dandog@gmail.com", 0),
+            Contact("PercyTheParrot", "percysquawks@proton.me", 1),
+            Contact("JustJenny", "jenny_8675309@gmail.com", 2)
 
         )
     }

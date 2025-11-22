@@ -11,8 +11,10 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class Contact(val username : String,
-    val email : String) {
+    val email : String,
+    val idx : Long? = null) {
 
     @PrimaryKey(autoGenerate = true)
-    val id : Long = 0
+    // idx will only be used for the fake contact repository since FakeItemRepository does not use a Room database
+    val id : Long = idx ?: 0
 }

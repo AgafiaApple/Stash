@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.compose.foundation.layout)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -1,13 +1,17 @@
 package com.example.sharingapp.ui
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,8 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.toColorLong
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,17 +36,27 @@ import com.example.sharingapp.ProfileIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
 
         val appContainer = (application as SharingApplication).container
 
+
         setContent {
-            SharingApp(appContainer)
+            AppTheme(dynamicColor = false){
+
+                    // call the app's primary composable
+                SharingApp(appContainer)
+
+            }
+
 
         }
+
+
     }
 }
 
@@ -46,7 +64,6 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
-    AppTheme {
         // to be passed down to the rest of the app hierarchy
         val navController = rememberNavController()
         val navActions = remember(navController) {
@@ -117,6 +134,4 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
         }
 
 
-
-    } // end AppTheme block
 } // end SharingApp fun
