@@ -22,12 +22,25 @@ class ContactsViewModel(private val repository : ContactsRepository) : ViewModel
     val uiState = _uiState.asStateFlow()
 
     init {
+        // call within a coroutine so we don't block the current thread
         viewModelScope.launch {
             // direct assignment for now
             val contacts = repository.getContacts()
-            // TODO: change to getOrNull later b/c it's safer
+            // TODO: replace getOrThrow to getOrNull later b/c it's safer
             _uiState.update { it.copy(contacts = contacts.getOrThrow(), isLoading = false)}
         }
+    }
+
+    fun deleteContact(id : Long) {
+        viewModelScope.launch {
+            repository.deleteContact(id)
+            // TODO: replace getOrThrow to getOrNull later b/c it's safer
+            val updatedContacts = repository.getContacts().getOrThrow()
+
+            // get the updated state so the user sees the list without the deleted contact
+            _uiState.update {it.copy(contacts = updatedContacts)}
+        }
+
     }
 
     // implement factory creator object
