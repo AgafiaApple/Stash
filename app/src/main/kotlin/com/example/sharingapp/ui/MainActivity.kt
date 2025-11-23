@@ -1,5 +1,6 @@
 package com.example.sharingapp.ui
 
+import android.R
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,13 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.toColorLong
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.core.view.WindowCompat
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -95,7 +89,8 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
                         restoreState = true
 
                     }
-                }
+                },
+
                 ) // end AppTopBar
             },
             bottomBar = {
@@ -114,7 +109,8 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
                         }
                     }
                 )
-            } // end bottomBar setup
+            }, // end bottomBar setup
+            containerColor = MaterialTheme.colorScheme.surface
         ) { innerPadding ->
             Row {
 //            if (isExpandedScreen) {

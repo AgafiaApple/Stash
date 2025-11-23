@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name = "primary_dark">#FFFFB5A0</color>
+    <color name = "primary_light">#FF8F4C38</color>
+    <color name = "primary_light_medium_contrast">#FF5D2514</color>
 </resources>
