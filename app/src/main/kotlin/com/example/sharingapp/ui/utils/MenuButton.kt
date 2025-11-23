@@ -2,9 +2,14 @@ package com.example.sharingapp.ui.utils
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,7 +17,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
+import com.example.sharingapp.ui.theme.outlineDark
 import java.security.InvalidKeyException
 
 enum class OptionsEnum(val action : String) {
@@ -57,7 +66,12 @@ class ItemtOption(option: OptionsEnum, private val shortened : Boolean = false) 
 
 
 @Composable
-fun MenuButton(options : List<OptionsEnum>, onClickList : List<() -> Unit>) {
+fun MenuButton(
+    options : List<OptionsEnum>,
+    onClickList : List<() -> Unit>,
+    iconTint : Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    boxModifier : Modifier = Modifier
+) {
 
     // each option must be associated with an onClick method
     assert(onClickList.size == options.size)
@@ -67,10 +81,16 @@ fun MenuButton(options : List<OptionsEnum>, onClickList : List<() -> Unit>) {
     var expanded by remember {mutableStateOf(false)}
 
     Box(
-        modifier = Modifier.padding(Dimens.Spacing.Medium)
+        modifier = boxModifier
     ) {
-        IconButton(onClick = {expanded = !expanded}) {
-            MenuVertIcon()
+        IconButton(
+            onClick = {expanded = !expanded},
+        ) {
+            Icon(
+                ComposeIcon.asImageVector(MenuVertIcon()),
+                contentDescription = "Menu button",
+                tint = iconTint
+            )
         }
         DropdownMenu(
             expanded = expanded,
@@ -82,7 +102,10 @@ fun MenuButton(options : List<OptionsEnum>, onClickList : List<() -> Unit>) {
 
                 DropdownMenuItem(
                     text = {Text(option.action)},
-                    onClick = click
+                    onClick = {
+                        click()
+                        expanded = false
+                    }
                 )
             }
 

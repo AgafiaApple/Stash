@@ -24,21 +24,26 @@ class ContactsViewModel(private val repository : ContactsRepository) : ViewModel
     init {
         // call within a coroutine so we don't block the current thread
         viewModelScope.launch {
-            // direct assignment for now
-            val contacts = repository.getContacts()
-            // TODO: replace getOrThrow to getOrNull later b/c it's safer
-            _uiState.update { it.copy(contacts = contacts.getOrThrow(), isLoading = false)}
+            // collect the flow -- this block runs forever, always listening for changes
+            // The collect block immediately pushes to the UI
+            val contacts = repository.getContacts().collect {updatedContactList ->
+                // this runs whenever _contactsFlow.update is called in the repository
+                val contactList = updatedContactList
+
+                _uiState.update { it.copy(
+                    contacts = contactList,
+                    isLoading = false
+                )}
+            }
+
+
         }
     }
 
     fun deleteContact(id : Long) {
         viewModelScope.launch {
+            // Because we are getting a Flow from the repository, we can just call delete
             repository.deleteContact(id)
-            // TODO: replace getOrThrow to getOrNull later b/c it's safer
-            val updatedContacts = repository.getContacts().getOrThrow()
-
-            // get the updated state so the user sees the list without the deleted contact
-            _uiState.update {it.copy(contacts = updatedContacts)}
         }
 
     }

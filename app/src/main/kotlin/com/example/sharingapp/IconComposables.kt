@@ -1,5 +1,7 @@
 package com.example.sharingapp
 
+import androidx.compose.ui.graphics.Color
+
 /*
  * Below are classes for accessing each icon utilized in SharingApp.
  * They inherit from the Compose
@@ -10,6 +12,7 @@ class HomeIcon : ComposeIcon() {
     override val image = R.drawable.home
 
     override val name = "home"
+
 }
 
 class HeartIcon : ComposeIcon() {

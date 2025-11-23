@@ -1,8 +1,13 @@
 package com.example.sharingapp.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items // must use if passing a list to `items()` in LazyColumn
@@ -10,6 +15,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,8 +34,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
@@ -49,8 +59,6 @@ fun ContactsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
 
-
-
     LazyColumn(contentPadding = inner_padding) {
         items(uiState.contacts, key = {contact -> contact.id}) { contact ->
             // by default, extra info about contact not shown
@@ -59,6 +67,7 @@ fun ContactsScreen(
             // each contact has the option to delete it
             val onDeleteContact = {
                 viewModel.deleteContact(contact.id)
+
             }
 
             ContactRow(contact,
@@ -83,8 +92,6 @@ fun ContactRow(
     // ContactRow with the viewModel by making the caller pass in the actions
     onDeleteContact : () -> Unit
 ) {
-    val firstInitial = contact.username.take(0)
-
 
     // only show the option if "show" is true
     var showEditDialog by remember {mutableStateOf(false)}
@@ -108,9 +115,10 @@ fun ContactRow(
 
     /* 1. THE ITEM UI */
     Card(
-        modifier = Modifier.padding(Dimens.Spacing.Medium)
+        modifier = Modifier.padding(Dimens.Spacing.Medium),
+        onClick = onClickContact,
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp) // TODO: replace 6.dp with a predefined value from utils
     ) {
-        Button(onClick = onClickContact) {
             ListItem(
                 headlineContent = { Text(contact.username) },
                 // TODO: Contact class should include a brief description -- and the card can slide down to show the whole description if the user clicks on it
@@ -121,18 +129,19 @@ fun ContactRow(
                 leadingContent = {
                     CircleInitialIcon(
                         contact.username,
-                        surfaceColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(.5f),
+                        surfaceColor = MaterialTheme.colorScheme.inversePrimary,
                         textColor = MaterialTheme.colorScheme.primary
                     )
                 },
     /* 2. Each contact has options to edit/delete */
                 trailingContent = {
+                    Column(verticalArrangement = Arrangement.Center){
+                        // our custom menu composable
+                        MenuButton(options, onClickOptions)
+                    }
 
-                    // our custom menu composable
-                    MenuButton(options, onClickOptions)
                 }
             ) // end ListItem
-        } // end Button
 
         //
 
@@ -149,8 +158,12 @@ fun ContactRow(
         val onDismissRequest = {showDeleteDialog = false}
         DeleteContact(
             onDismissRequest = onDismissRequest,
-            onConfirmation = onDeleteContact,
-            contact = contact)
+            onConfirmation = {
+                onDeleteContact()
+                showDeleteDialog = false // close dialog box
+                             },
+            contact = contact
+        )
 
     }
 

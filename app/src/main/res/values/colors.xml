@@ -3,4 +3,5 @@
     <color name = "primary_dark">#FFFFB5A0</color>
     <color name = "primary_light">#FF8F4C38</color>
     <color name = "primary_light_medium_contrast">#FF5D2514</color>
+    <color name = "on_primary_container_light">#FF723523</color>
 </resources>
