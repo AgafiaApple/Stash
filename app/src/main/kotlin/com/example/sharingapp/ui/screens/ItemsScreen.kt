@@ -30,7 +30,7 @@ import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
 import com.example.sharingapp.model.Item
 import com.example.sharingapp.ui.utils.Dimens.Spacing
-import com.example.sharingapp.ui.utils.ExpandableItemCard
+import com.example.sharingapp.ui.utils.ExpandableCard
 
 
 
@@ -68,7 +68,7 @@ fun ItemsScreen(
 
 @Composable
 fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier, isExpanded : Boolean) {
-    ExpandableItemCard(
+    ExpandableCard(
         item = item,
         onToggle = onClick,
         isExpanded = isExpanded,

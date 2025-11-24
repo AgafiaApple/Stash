@@ -24,12 +24,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
+import com.example.sharingapp.ui.utils.Dimens.Card
+import com.example.sharingapp.ui.utils.Dimens.Spacing
 
 @Composable
-fun <T>ExpandableItemCard(
+fun <T>ExpandableCard(
     item: T,
     isExpanded: Boolean,
     onToggle: () -> Unit,
@@ -38,20 +45,35 @@ fun <T>ExpandableItemCard(
     cardDescription : String? = null
 
     ){
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Dimens.Spacing.Small)
+            .padding(Spacing.Small)
+            .dropShadow(
+                shape = RoundedCornerShape(Card.roundedCorner),
+                shadow = Shadow(
+                    radius = Card.shadowRadius,
+                    spread = Card.shadowSpread,
+                    color = Card.shadowColor,
+                    offset = Card.shadowOffset,
+                    alpha = Card.shadowAlpha
+                )
+            )
             .animateContentSize( // automatically responds to height changes
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioLowBouncy,
                     stiffness = Spring.StiffnessLow
                 )
             )
+
             .clickable {onToggle()}
-            .clip(RoundedCornerShape(20.dp)) // TODO: change to use a predefined value from Dimens
+            .clip(RoundedCornerShape(Card.roundedCorner))
+
             .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(Dimens.Spacing.Medium)
+            .padding(Spacing.Medium)
+
+
     ) {
         // Header row is visible always
         Row(
@@ -59,7 +81,7 @@ fun <T>ExpandableItemCard(
             modifier = Modifier.fillMaxWidth()
         ){
             // TODO: add avatar circle here
-            Spacer(Modifier.width(Dimens.Spacing.Medium))
+            Spacer(Modifier.width(Spacing.Medium))
 
             Column {
                 // the name of the contact or item
@@ -83,18 +105,18 @@ fun <T>ExpandableItemCard(
 
         // DROP DOWN MENU
         if (isExpanded) {
-            Spacer(Modifier.height(Dimens.Spacing.Medium))
+            Spacer(Modifier.height(Spacing.Medium))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp) // TODO: this should use dimensions predefined in Dimens
-                    .clip(RoundedCornerShape(20.dp))
+                    .height(Card.height)
+                    .clip(RoundedCornerShape(Card.roundedCorner))
                     .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
                 // TODO: Image placeholder here
             }
 
-            Spacer(Modifier.height(Dimens.Spacing.Medium))
+            Spacer(Modifier.height(Spacing.Medium))
             if (cardDescription != null) {
                 Text(cardDescription, style = MaterialTheme.typography.bodyMedium)
             } else {
@@ -103,6 +125,6 @@ fun <T>ExpandableItemCard(
 
 
         }
-    }
+    } // end outer column
 
 }

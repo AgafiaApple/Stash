@@ -144,7 +144,7 @@ fun ContactRow(
     Card(
         modifier = Modifier.padding(Dimens.Spacing.Medium),
         onClick = onClickContact,
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp) // TODO: replace 6.dp with a predefined value from utils
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Card.elevation) // TODO: replace 6.dp with a predefined value from utils
     ) {
             ListItem(
                 headlineContent = { Text(contact.username) },

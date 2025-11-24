@@ -1,6 +1,8 @@
 package com.example.sharingapp.ui.utils
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
 // using object for the outer structure instead of class
@@ -10,5 +12,16 @@ object Dimens {
         val Small = 8.dp
         val Medium = 16.dp
         val Large = 24.dp
+    }
+
+    object Card {
+        val height = 100.dp
+        val roundedCorner = 20.dp
+        val elevation = 6.dp
+        val shadowRadius = 2.dp
+        val shadowSpread = 2.dp
+        val shadowColor = Color(0x40000000)
+        val shadowOffset = DpOffset(x = (-2).dp, y = 2.dp)
+        val shadowAlpha = .5f
     }
 }

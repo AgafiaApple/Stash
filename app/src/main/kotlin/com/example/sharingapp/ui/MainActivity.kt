@@ -67,10 +67,9 @@ class MainActivity : ComponentActivity() {
             }
 
 
-        }
+        } // end setContact block
 
-
-    }
+    } // end onCreate
 }
 
 
