@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 @Composable
 fun CircleInitialIcon(name : String,
                       modifier: Modifier = Modifier,
-                      size : Dp = 48.dp,
+                      size : Dp = 60.dp,
                       surfaceColor : Color = MaterialTheme.colorScheme.primaryContainer,
                       textColor : Color = MaterialTheme.colorScheme.onPrimaryContainer,
                       textStyle : TextStyle = MaterialTheme.typography.labelLarge
@@ -29,7 +30,7 @@ fun CircleInitialIcon(name : String,
         modifier = modifier
             .size(size)
             // clip the box to a circular shape
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(Dimens.Card.roundedCorner))
             .background(surfaceColor),
     ) {
         Text(

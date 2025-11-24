@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -42,7 +43,9 @@ fun <T>ExpandableCard(
     onToggle: () -> Unit,
     cardTitle : String,
     cardSubtitle : String? = null,
-    cardDescription : String? = null
+    cardDescription : String? = null,
+    menuOptions : List<OptionsEnum>,
+    menuOnClickOptions : List<() -> Unit>
 
     ){
 
@@ -95,12 +98,8 @@ fun <T>ExpandableCard(
             Spacer(Modifier.weight(1f)) // fill remaining space -- is this a good idea?
 
             // vertical menu icon
-            Icon(
-                // TODO: make this button always visible in top-right
-                imageVector = ComposeIcon.asImageVector(MenuVertIcon()),
-                contentDescription = "More",
-                // TODO: add `onClick` for the menu functionality
-            )
+            MenuButton(menuOptions, menuOnClickOptions)
+
         } // end Row block
 
         // DROP DOWN MENU

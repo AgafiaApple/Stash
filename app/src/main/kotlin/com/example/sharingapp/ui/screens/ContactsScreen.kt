@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +50,7 @@ import com.example.sharingapp.MenuVertIcon
 import com.example.sharingapp.ui.utils.CircleInitialIcon
 import com.example.sharingapp.ui.utils.ContactOption
 import com.example.sharingapp.ui.utils.Dimens
+import com.example.sharingapp.ui.utils.ExpandableCard
 import com.example.sharingapp.ui.utils.MenuButton
 import com.example.sharingapp.ui.utils.OptionsEnum
 
@@ -62,6 +64,19 @@ fun ContactsScreen(
 
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var expandedContactId by remember {mutableStateOf<Long?>(null)}
+
+    val onToggleContact = {contact : Contact ->
+        // if the contact is clicked when closed, expand it
+        if (contact.id != expandedContactId) {
+            expandedContactId = contact.id
+        }
+        // if the toggled contact is already open, close it
+        else {
+            expandedContactId = null
+        }
+
+    }
 
     // we need this outer box to keep the list and add-icon from overlapping
     Box(
@@ -78,11 +93,53 @@ fun ContactsScreen(
 
                 }
 
-                ContactRow(contact,
-                    onDeleteContact = onDeleteContact,
-                    // clicking the contact can slide out the contact to see more info
-                    onClickContact = {!showClickContact}
-                )
+                // use a row to separate the profile icon from the row
+                Row(
+                    modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // profile icon
+                    CircleInitialIcon(
+                        name = contact.username,
+                        surfaceColor = MaterialTheme.colorScheme.inversePrimary,
+                        textColor = MaterialTheme.colorScheme.primary
+                    )
+
+                   // main UI - the row
+                    ContactRowExpandable(
+                        contact = contact,
+                        onDeleteContact = onDeleteContact,
+                        onClickContact = { onToggleContact(contact) },
+                        isExpanded = (expandedContactId == contact.id)
+                    )
+
+                }
+
+                /*
+                    Row(
+        Modifier.padding(Dimens.Spacing.Medium),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // profile icon
+        CircleInitialIcon(
+            name = item.title,
+            surfaceColor = MaterialTheme.colorScheme.inversePrimary,
+            textColor = MaterialTheme.colorScheme.primary
+        )
+
+        // main informational row
+        ExpandableCard(
+            item = item,
+            onToggle = onClick,
+            isExpanded = isExpanded,
+            cardTitle = item.title,
+            cardSubtitle = item.maker,
+            menuOptions = emptyList<OptionsEnum>(),
+            menuOnClickOptions = emptyList<() -> Unit>()
+        )
+    }
+                 */
+
 
                 // inform the user that the "more information" for contact has not been implemented yet
                 if(showClickContact) {
@@ -93,17 +150,17 @@ fun ContactsScreen(
 
         // add-item button at the bottom right of the screen
 
-            // TODO: onClick should navigate the user to the AddItem page
+            // TODO: onClick should navigate the user to the AddContact page
             FloatingActionButton(
                 onClick = {},
                 modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(Dimens.Spacing.Medium),
+                    .align(Alignment.BottomEnd)
+                    .padding(Dimens.Spacing.Medium),
                 elevation = FloatingActionButtonDefaults.elevation(2.dp)
             ) {
                 Icon(
                     imageVector = ComposeIcon.asImageVector(AddBoxIcon()),
-                    contentDescription = "Add item"
+                    contentDescription = "Add contact"
                 )
 
             }
@@ -112,12 +169,73 @@ fun ContactsScreen(
 } // end ContactsScreen
 
 @Composable
+fun ContactRowExpandable(
+    contact : Contact,
+    onClickContact : () -> Unit,
+    // keep the viewModel interaction at the topmost level of the UI
+    onDeleteContact : () -> Unit,
+    isExpanded : Boolean
+) {
+    // only show the option if "show" is true
+    var showEditDialog by remember {mutableStateOf(false)}
+
+    var showDeleteDialog by remember {mutableStateOf(false)}
+
+    // param for the menu composable
+    val options = listOf(
+        OptionsEnum.EDIT,
+        OptionsEnum.DELETE
+    )
+
+    // param for the menu composable
+    // the order of the onClick list must correspond with the options list
+    val onClickOptions = listOf(
+        // dialog for editing a contact is shown
+        {showEditDialog = true},
+        // dialog for deleting a contact is shown
+        {showDeleteDialog = true}
+    )
+
+
+        ExpandableCard(
+            contact,
+            isExpanded = isExpanded,
+            onToggle = onClickContact,
+            cardTitle = contact.username,
+            menuOptions = options,
+            menuOnClickOptions = onClickOptions
+        )
+
+    /* 3. If the user clicked one of the menu options */
+    if (showEditDialog) {
+        val onDismissRequest = {showEditDialog = false}
+        // TODO: replace with a dialog that uses an onEditContact function passed into the row
+        EditNotImplemented(onDismiss = onDismissRequest)
+    }
+
+    if (showDeleteDialog) {
+        val onDismissRequest = {showDeleteDialog = false}
+        DeleteContact(
+            onDismissRequest = onDismissRequest,
+            onConfirmation = {
+                onDeleteContact()
+                showDeleteDialog = false // close dialog box
+            },
+            contact = contact
+        )
+
+    } // end if-statement
+
+
+} // end ContactRowExpandable composable
+
+@Composable
 fun ContactRow(
     contact : Contact,
     onClickContact : () -> Unit,
     // keep the viewModel interaction at the topmost level of the UI -- not coupling
     // ContactRow with the viewModel by making the caller pass in the actions
-    onDeleteContact : () -> Unit
+    onDeleteContact : () -> Unit,
 ) {
 
     // only show the option if "show" is true
@@ -140,7 +258,7 @@ fun ContactRow(
         {showDeleteDialog = true}
     )
 
-    /* 1. THE ITEM UI */
+    /* 1. THE Contact List UI */
     Card(
         modifier = Modifier.padding(Dimens.Spacing.Medium),
         onClick = onClickContact,
@@ -216,7 +334,7 @@ fun DeleteContact(contact : Contact, onDismissRequest : () -> Unit, onConfirmati
         // the user does NOT delete the contact
         dismissButton = {
             // Add a cancel button so the user isn't stuck
-            androidx.compose.material3.TextButton(onClick = onDismissRequest) {
+            TextButton(onClick = onDismissRequest) {
                 Text("Cancel")
             }
         }
