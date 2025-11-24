@@ -2,6 +2,7 @@ package com.example.sharingapp.ui.utils
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
@@ -15,7 +16,7 @@ object Dimens {
     }
 
     object Card {
-        val height = 100.dp
+        val height = 140.dp
         val roundedCorner = 20.dp
         val elevation = 6.dp
         val shadowRadius = 2.dp
@@ -23,5 +24,13 @@ object Dimens {
         val shadowColor = Color(0x40000000)
         val shadowOffset = DpOffset(x = (-2).dp, y = 2.dp)
         val shadowAlpha = .5f
+
+        val shadow = Shadow(
+            radius = shadowRadius,
+            spread = shadowSpread,
+            color = shadowColor,
+            offset = shadowOffset,
+            alpha = shadowAlpha
+        )
     }
 }

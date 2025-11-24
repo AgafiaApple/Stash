@@ -11,10 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.TextStyle
+import com.example.sharingapp.ui.utils.Dimens.Card
 
 @Composable
 fun CircleInitialIcon(name : String,
@@ -29,6 +32,11 @@ fun CircleInitialIcon(name : String,
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(size)
+            // add a dropShadow to
+            .dropShadow(
+                shape = RoundedCornerShape(Card.roundedCorner),
+                shadow = Card.shadow
+            )
             // clip the box to a circular shape
             .clip(RoundedCornerShape(Dimens.Card.roundedCorner))
             .background(surfaceColor),

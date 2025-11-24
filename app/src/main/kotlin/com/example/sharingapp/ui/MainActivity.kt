@@ -38,6 +38,12 @@ import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
 import java.security.InvalidKeyException
 
+/*  --- REMINDERS ---
+ *
+ *    // TODO LIST:
+ *      * check that every composable accepts an optional modifier - good UI practice
+ *      * make specification of spacing (.dp values) as high-level as possible (e.g. better to edit the spacing of a row than each item in the row)
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

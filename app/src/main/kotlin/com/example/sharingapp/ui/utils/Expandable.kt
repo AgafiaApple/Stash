@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -45,7 +47,9 @@ fun <T>ExpandableCard(
     cardSubtitle : String? = null,
     cardDescription : String? = null,
     menuOptions : List<OptionsEnum>,
-    menuOnClickOptions : List<() -> Unit>
+    menuOnClickOptions : List<() -> Unit>,
+    imagePainter : Painter? = null,
+    includeImage : Boolean = true
 
     ){
 
@@ -55,13 +59,7 @@ fun <T>ExpandableCard(
             .padding(Spacing.Small)
             .dropShadow(
                 shape = RoundedCornerShape(Card.roundedCorner),
-                shadow = Shadow(
-                    radius = Card.shadowRadius,
-                    spread = Card.shadowSpread,
-                    color = Card.shadowColor,
-                    offset = Card.shadowOffset,
-                    alpha = Card.shadowAlpha
-                )
+                shadow = Dimens.Card.shadow
             )
             .animateContentSize( // automatically responds to height changes
                 animationSpec = spring(
@@ -83,7 +81,6 @@ fun <T>ExpandableCard(
            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ){
-            // TODO: add avatar circle here
             Spacer(Modifier.width(Spacing.Medium))
 
             Column {
@@ -112,7 +109,12 @@ fun <T>ExpandableCard(
                     .clip(RoundedCornerShape(Card.roundedCorner))
                     .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
-                // TODO: Image placeholder here
+                // image within the dropdown menu
+                if (includeImage) {
+                    imageInRow(
+                        imagePainter = imagePainter,
+                    )
+                }
             }
 
             Spacer(Modifier.height(Spacing.Medium))

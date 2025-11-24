@@ -156,7 +156,8 @@ fun ContactsScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(Dimens.Spacing.Medium),
-                elevation = FloatingActionButtonDefaults.elevation(2.dp)
+                elevation = FloatingActionButtonDefaults.elevation(2.dp),
+                containerColor = MaterialTheme.colorScheme.inversePrimary
             ) {
                 Icon(
                     imageVector = ComposeIcon.asImageVector(AddBoxIcon()),
@@ -203,7 +204,8 @@ fun ContactRowExpandable(
             onToggle = onClickContact,
             cardTitle = contact.username,
             menuOptions = options,
-            menuOnClickOptions = onClickOptions
+            menuOnClickOptions = onClickOptions,
+            includeImage = false
         )
 
     /* 3. If the user clicked one of the menu options */

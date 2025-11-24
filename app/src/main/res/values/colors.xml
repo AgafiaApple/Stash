@@ -5,4 +5,5 @@
     <color name = "primary_light_medium_contrast">#FF5D2514</color>
     <color name = "on_primary_container_light">#FF723523</color>
     <color name = "primary_container_light">#FFDBD1FF</color>
+    <color name = "inverse_primary_light">#FFB5A0FF</color>
 </resources>

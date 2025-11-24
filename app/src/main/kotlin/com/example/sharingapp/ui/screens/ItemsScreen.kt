@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sharingapp.AddBoxIcon
@@ -84,7 +85,9 @@ fun ItemsScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(Dimens.Spacing.Medium),
-            elevation = FloatingActionButtonDefaults.elevation(2.dp)
+            elevation = FloatingActionButtonDefaults.elevation(2.dp),
+            containerColor = MaterialTheme.colorScheme.inversePrimary
+
         ) {
             Icon(
                 imageVector = ComposeIcon.asImageVector(AddBoxIcon()),
@@ -99,7 +102,13 @@ fun ItemsScreen(
 } // end ItemsScreen
 
 @Composable
-fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier, isExpanded : Boolean) {
+fun ItemRow(item : Item,
+            onClick: () -> Unit,
+            modifier: Modifier =
+                Modifier,
+            isExpanded : Boolean,
+            imagePainter : Painter? = null
+            ) {
 
 
     ExpandableCard(
@@ -109,7 +118,7 @@ fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier, isE
         cardTitle = item.title,
         cardSubtitle = item.maker,
         menuOptions = emptyList<OptionsEnum>(),
-        menuOnClickOptions = emptyList<() -> Unit>()
+        menuOnClickOptions = emptyList<() -> Unit>(),
     )
 
 } // end ItemRow fun
