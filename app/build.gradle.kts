@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.animation.core)
     testImplementation(libs.junit.junit)
     testImplementation(libs.junit.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

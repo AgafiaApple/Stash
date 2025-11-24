@@ -3,6 +3,7 @@ package com.example.sharingapp.ui
 import android.R
 import android.app.Activity
 import android.os.Bundle
+import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,13 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.sharingapp.ComposeIcon
-import com.example.sharingapp.ContactsIcon
-import com.example.sharingapp.HomeIcon
-import com.example.sharingapp.ProfileIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +37,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme(dynamicColor = false){
+                // header that will always be seen and the same
+
+                // title of the current screen
+
 
                     // call the app's primary composable
                 SharingApp(appContainer)
@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 
     }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)

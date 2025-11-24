@@ -23,7 +23,8 @@ composeBom = "2024.09.00"
 roomCommonJvm = "2.8.3"
 roomKtx = "2.8.3"
 lifecycleViewmodelKtx = "2.9.4"
-foundationLayout = "1.9.5" #
+foundationLayout = "1.9.5"
+animationCore = "1.9.5" #
 
 [libraries]
 
@@ -60,6 +61,7 @@ androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", 
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
