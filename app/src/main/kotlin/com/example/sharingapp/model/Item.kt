@@ -23,12 +23,14 @@ data class Item (
 
     val useDao : Boolean = true,
 
-    var status : Status = Status.AVAILABLE
+    var status : Status = Status.AVAILABLE,
+
+    val idx : Long? = null
 
 ) {
 
     @PrimaryKey(autoGenerate=true)
-    val id : Long = if (useDao) 0 else getThenIncrementIdx()
+    val id : Long = idx ?: 0
 
     // default is that there is no borrower
     var borrower : Contact? = null
@@ -44,15 +46,6 @@ data class Item (
 //            return base64ToBitmap(this.image_base64)
 //        }
 
-    companion object {
-        var nextIdx : Long  = 0
-        fun getThenIncrementIdx() : Long {
-            val idx : Long = nextIdx
-            nextIdx = nextIdx + 1
-            return idx
-        }
-
-    }
 
 
 }

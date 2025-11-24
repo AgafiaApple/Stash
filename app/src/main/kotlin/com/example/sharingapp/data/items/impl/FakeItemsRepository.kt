@@ -13,16 +13,17 @@ import kotlinx.coroutines.flow.update
 import kotlin.getValue
 
 class FakeItemsRepository : ItemsRepository {
+    private var nextIdx : Long = 0
     private val _itemsFlow by lazy {
         MutableStateFlow(
             listOf(
                 Item("Lawn Mower", "John Deere", "A well-loved grass-eating machine (rust warning)",
-                    Dimensions(5, 2, 2)),
-                Item("A Big Sword", "Zabuza inc.", "It's really big.", Dimensions(7, 0, 0)),
+                    Dimensions(5, 2, 2), idx = getThenIncrememntIdx()),
+                Item("A Big Sword", "Zabuza inc.", "It's really big.", Dimensions(7, 0, 0), idx = getThenIncrememntIdx()),
                 Item("Flowbee", "Rick E. Hunts", "An innovative at-home haircutting system for the brave of heart.",
-                    Dimensions(15, 8, 4)),
+                    Dimensions(15, 8, 4), idx = getThenIncrememntIdx()),
                 Item("French Fry Holder", "Yours Truly", "Down with the H20, in with the NaCl.",
-                    Dimensions(1, 1, 1))
+                    Dimensions(1, 1, 1), idx = getThenIncrememntIdx())
             )
         )
     }
@@ -165,6 +166,12 @@ class FakeItemsRepository : ItemsRepository {
 
         }
 
+    }
+
+    private fun getThenIncrememntIdx() : Long {
+        val idx = this.nextIdx
+        this.nextIdx = this.nextIdx + 1
+        return idx
     }
 
 
