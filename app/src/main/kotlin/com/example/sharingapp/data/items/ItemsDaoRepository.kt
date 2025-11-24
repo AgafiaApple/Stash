@@ -3,6 +3,7 @@ package com.example.sharingapp.data.items
 import com.example.sharingapp.model.Dimensions
 import com.example.sharingapp.model.Item
 import com.example.sharingapp.model.Status
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Implements the ItemsRepository interface
@@ -12,7 +13,7 @@ import com.example.sharingapp.model.Status
  * Is utilized by the ItemsViewModel of the application
  */
 class ItemsDaoRepository(private val itemDao : ItemDao) : ItemsRepository {
-    override suspend fun getItems(): List<Item> {
+    override suspend fun getItems(): Flow<List<Item>> {
         return itemDao.getItems()
     }
 

@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 
 // HomeUiState prototype
@@ -37,9 +39,11 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            // direct assignment for now
-            val items = repository.getItems()
-            _uiState.update { it.copy(items = items, isLoading = false)}
+            val items = repository.getItems().collect {updatedItemsList ->
+                // this runs whenever _itemsFlow.update is called in the repository
+                val itemsList = updatedItemsList
+                _uiState.update { it.copy(items = itemsList, isLoading = false)}
+            }
         }
     }
     // implement factory
@@ -85,7 +89,9 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     }
 
     fun onDeleteItem(itemId : Long) {
-
+        viewModelScope.launch {
+            repository.deleteItem(itemId)
+        }
     }
 
 

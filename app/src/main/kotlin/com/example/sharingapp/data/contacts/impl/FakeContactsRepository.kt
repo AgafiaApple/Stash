@@ -44,7 +44,6 @@ class FakeContactsRepository : ContactsRepository {
         _contactsFlow.update { currentList ->
             currentList.filter {it.id != id}
         }
-        // if the contact with that id was not found
         return true
     }
 }

@@ -3,9 +3,10 @@ package com.example.sharingapp.data.items
 import com.example.sharingapp.model.Dimensions
 import com.example.sharingapp.model.Item
 import com.example.sharingapp.model.Status
+import kotlinx.coroutines.flow.Flow
 
 interface ItemsRepository {
-     suspend fun getItems() : List<Item>
+     suspend fun getItems() : Flow<List<Item>>
      suspend fun addItem(item : Item) : Boolean
      suspend fun deleteItem(itemId : Long) : Boolean
      suspend fun updateItemStatus(itemId : Long, newStatus : Status)

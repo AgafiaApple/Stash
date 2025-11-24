@@ -341,7 +341,7 @@ fun DeleteContact(contact : Contact, onDismissRequest : () -> Unit, onConfirmati
             }
         }
     )
-}
+} // end DeleteContact composable
 
 @Composable
 fun EditNotImplemented(onDismiss : () -> Unit) {

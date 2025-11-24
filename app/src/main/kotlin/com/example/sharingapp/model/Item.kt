@@ -21,14 +21,15 @@ data class Item (
     @Embedded
     var dims : Dimensions,
     // idx will only be used for the fake item repository since FakeItemRepository does not use a Room database
-    val idx : Long? = null
+    val idx : Long? = null,
+
+    var status : Status = Status.AVAILABLE
 
 ) {
 
     @PrimaryKey(autoGenerate=true)
     val id : Long = idx ?: 0
 
-    var status = Status.AVAILABLE
 
     // default is that there is no borrower
     var borrower : Contact? = null

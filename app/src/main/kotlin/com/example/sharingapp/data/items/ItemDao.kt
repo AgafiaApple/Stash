@@ -9,6 +9,7 @@ import androidx.room.Query
 import com.example.sharingapp.model.Dimensions
 import com.example.sharingapp.model.Item
 import com.example.sharingapp.model.Status
+import kotlinx.coroutines.flow.Flow
 
 const val ITEM_TABLE_NAME = "Item"
 
@@ -29,7 +30,7 @@ interface ItemDao {
 
     // we can do this b/c the `Item` class uses the @Entity notation
     @Query("SELECT * FROM " + ITEM_TABLE_NAME)
-    suspend fun getItems() : List<Item>
+    suspend fun getItems() : Flow<List<Item>>
 
     @Query("DELETE FROM " + ITEM_TABLE_NAME + " WHERE id = :itemId")
     suspend fun deleteItem(itemId : Long) : Long

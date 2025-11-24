@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -20,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -31,11 +34,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.sharingapp.AddBoxIcon
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
+import com.example.sharingapp.model.Contact
 import com.example.sharingapp.model.Item
 import com.example.sharingapp.ui.AppDestination
 import com.example.sharingapp.ui.utils.Dimens
@@ -55,6 +60,8 @@ fun ItemsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     // track which (if any) card is expanded
     var expandedItemId  by remember { mutableStateOf<Long?>(null) }
+
+
     // the function to pass into each item's row
     val onToggle = {item : Item ->
         // if the toggled item is closed, open it (closing other cards)
@@ -73,8 +80,13 @@ fun ItemsScreen(
         // passing down innerPadding to ensure the app does not draw behind the the status bar and navigation
         LazyColumn(contentPadding = innerPadding) {
             items(uiState.items, key = { item -> item.id }) { item ->
-                // TODO: add to item row code here
-                // options for the menu
+
+                // only show delete dialog for an item if showDeleteDialog is true
+                // TODO: not likely, but I should still make sure that user's are not able to open multiple delete dialogs at once
+                var showDeleteDialog by remember { mutableStateOf(false) }
+
+
+                // OPTIONS FOR THE MENU
                 val options = listOf<OptionsEnum>(
                     OptionsEnum.EDIT,
                     OptionsEnum.DELETE
@@ -89,19 +101,37 @@ fun ItemsScreen(
 
                     },
 
-                    // Second function in the list - TODO: implement delete item
-                    {}
+                    // Second function in the list
+                    {
+                        showDeleteDialog = true
+                    }
                 )
-                val isExpanded =
-                    ItemRow(
-                        item = item,
-                        onClick = { onToggle(item) },
-                        isExpanded = (expandedItemId == item.id),
-                        menuOptions = options,
-                        menuOptionsOnClick = onClickOptions
+
+                //
+                val onConfirmDelete = {
+                    showDeleteDialog = false
+                    viewModel.onDeleteItem(item.id)
+
+                }
+                ItemRow(
+                    item = item,
+                    onClick = { onToggle(item) },
+                    isExpanded = (expandedItemId == item.id),
+                    menuOptions = options,
+                    menuOptionsOnClick = onClickOptions,
+                )
+
+                // show the delete dialog ONLY if showDeleteDialog == true
+                if (showDeleteDialog) {
+                    DeleteItem(
+                        onDismissRequest = {showDeleteDialog = false},
+                        onConfirmation = { onConfirmDelete() },
+                        item = item
                     )
-            }
-        }
+                } // end if
+            } // end items block
+        } // end LazyColumn block
+
 
         // TODO: onClick should navigate the user to the AddItem page
         FloatingActionButton(
@@ -136,7 +166,6 @@ fun ItemRow(item : Item,
             menuOptionsOnClick : List<() -> Unit>
             ) {
 
-
     ExpandableCard(
         item = item,
         onToggle = onClick,
@@ -144,7 +173,34 @@ fun ItemRow(item : Item,
         cardTitle = item.title,
         cardSubtitle = item.maker,
         menuOptions = menuOptions,
-        menuOnClickOptions = menuOptionsOnClick
+        menuOnClickOptions = menuOptionsOnClick,
     )
 
+
+
 } // end ItemRow fun
+
+@Composable
+fun DeleteItem(item : Item, onDismissRequest : () -> Unit, onConfirmation : (Item) -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "Delete ${item.title}?") },
+        text = { Text("This action cannot be undone") },
+
+        // The user deletes the contact
+        confirmButton = {
+            Button(
+                onClick = { onConfirmation(item) }
+            ) {
+                Text("Delete")
+            }
+        },
+        // the user does NOT delete the contact
+        dismissButton = {
+            // Add a cancel button so the user isn't stuck
+            TextButton(onClick = onDismissRequest) {
+                Text("Cancel")
+            }
+        }
+    )
+}
