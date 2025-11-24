@@ -12,23 +12,13 @@ import com.example.sharingapp.ProfileIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(
-    onNavigateToProfile : () -> Unit
+fun ScreenTopBar(
+    screenTitle : String
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = "Your Stash")
-        },
-        actions = {
-            // navigation button
-            // TODO: replace with onNavigateToProfile and Profile icon
-            IconButton(onClick = onNavigateToProfile) {
-                Icon(
-                    ComposeIcon.asImageVector(ProfileIcon()),
-                    contentDescription = "Profile"
-                )
-            }
-        } // end actions parameter
+            Text(text = screenTitle)
+        }
     ) // end CenterAlignedTopAppBar
 
 } // end AppTopBar fun

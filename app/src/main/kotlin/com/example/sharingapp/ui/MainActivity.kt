@@ -9,10 +9,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,10 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.sharingapp.ComposeIcon
+import com.example.sharingapp.ProfileIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
+import java.security.InvalidKeyException
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,13 +47,21 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme(dynamicColor = false){
-                // header that will always be seen and the same
 
-                // title of the current screen
+                Column{
+                    // logo header that will always be seen
+                    AppHeaderBar("Stash", {})
 
+                    // title of the current screen
+
+
+                    // get the NavHostController that tracks which screen we are in
+                    val navController = rememberNavController()
 
                     // call the app's primary composable
-                SharingApp(appContainer)
+                    SharingApp(appContainer, navController = navController)
+                }
+
 
             }
 
@@ -55,15 +73,45 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppHeaderBar(
+    title : String,
+    onClickProfile : () -> Unit
+) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        CenterAlignedTopAppBar(
+            title = {
+                Text(title, style = MaterialTheme.typography.titleLarge)
+            },
+            actions = {
+                IconButton(onClick = onClickProfile) {
+                    Icon(
+                        imageVector = ComposeIcon.asImageVector(ProfileIcon()),
+                        contentDescription = "Profile"
+                    )
+                }
+            }
+        ) // end CenterAlignedTopAppBar
+    } // end Card block
+
+
+}
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
+fun SharingApp(appContainer : AppContainer,
+               isExpandedScreen : Boolean = false,
+               navController : NavHostController) {
         // to be passed down to the rest of the app hierarchy
-        val navController = rememberNavController()
         val navActions = remember(navController) {
             SharingAppNavigation(navController)
         }
+
 
         // TODO : pass down/use this functionality
         val coroutineScope = rememberCoroutineScope()
@@ -71,6 +119,14 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute =
             navBackStackEntry?.destination?.route ?: AppDestination.HOME.name
+
+        // the heading of the current page
+        var screenTitle = when (currentRoute) {
+            AppDestination.HOME.name -> "Your Stash"
+            AppDestination.PROFILE.name -> "Profile"
+            AppDestination.CONTACTS.name -> "Your Contacts"
+            else -> throw InvalidKeyException("Invalid route given")
+        }
 
         // TODO: isExpandedScreen
 //        val isExpandedScreen = ...
@@ -81,18 +137,9 @@ fun SharingApp(appContainer : AppContainer,isExpandedScreen : Boolean = false) {
          */
         Scaffold(
             topBar = {
-                AppTopBar(onNavigateToProfile = {
-                    navController.navigate(AppDestination.PROFILE.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-
-                    }
-                },
-
-                ) // end AppTopBar
+                ScreenTopBar(
+                    screenTitle
+                )
             },
             bottomBar = {
                 AppBottomBar(

@@ -46,10 +46,10 @@ fun ItemsScreen(
     var expandedItemId  by remember { mutableStateOf<Long?>(null) }
     // the function to pass into each item's row
     val onToggle = {item : Item ->
-        // if the toggled item is closed
+        // if the toggled item is closed, open it (closing other cards)
         if (item.id != expandedItemId ) {
             expandedItemId = item.id
-        // if the toggled item is already open
+        // if the toggled item is already open, close it
         } else {
             expandedItemId = null
         }
@@ -68,7 +68,13 @@ fun ItemsScreen(
 
 @Composable
 fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier, isExpanded : Boolean) {
-    ExpandableItemCard(item = item, onToggle = onClick, isExpanded = isExpanded)
+    ExpandableItemCard(
+        item = item,
+        onToggle = onClick,
+        isExpanded = isExpanded,
+        cardTitle = item.title,
+        cardSubtitle = item.maker
+    )
 
 
 //        Row(
@@ -105,11 +111,3 @@ fun ItemRow(item : Item, onClick: () -> Unit, modifier: Modifier = Modifier, isE
 
 
     } // end ItemRow fn
-
-
-
-/* NOTES ON TOGGLING CARD */
-// if the item is clicked, `expandedItemId` is changed to the id of that item
-// if the item is clicked and already opened, expandedItemId is changed to null
-// `onToggle` changes the expandedItemId variable to whatever is clicked - so it is
-// connected to `isExpanded` boolean
