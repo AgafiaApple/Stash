@@ -2,84 +2,237 @@ package com.example.sharingapp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import com.example.sharingapp.model.Contact
 import com.example.sharingapp.model.Item
+import com.example.sharingapp.ui.AppDestination
 import com.example.sharingapp.ui.ScreenTopBar
-
-@OptIn(ExperimentalMaterial3Api::class)
+import com.example.sharingapp.ui.utils.Dimens.Card
+import com.example.sharingapp.ui.utils.Dimens.Spacing
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditItemScreen(
-    isExpandedScreen: Boolean,
     viewModel: ItemsViewModel,
-    innerPadding : PaddingValues,
-    item : Item
+    itemId: Long,
+    innerPadding: PaddingValues,
+    isExpandedScreen : Boolean = false,
+    navController : NavHostController
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val defaultText = "Empty"
+    val item = uiState.items.firstOrNull { it.id == itemId } ?: return
 
-    Column {
-        //  Appbar with the screen title
-        ScreenTopBar(item.title)
-        // TODO: Stats - how many times it has been borrowed, it's current status
 
-        // Item title field
-        narrowTextBox(text = defaultText,  onValueChange = {}, )
+    // only becomes true if the user decides to cancel their changes
+    var showCancelDialog by remember { mutableStateOf(false) }
 
-        // Item maker field
-        narrowTextBox(text = defaultText, onValueChange = {})
+    // for suspend functions that must be run within a coroutine
+    val coroutineScope = rememberCoroutineScope()
 
-        // Item description
-        largeTextBox(text = defaultText, onValueChange = {})
+    // using remember(item) instead of just remember so that remember only every has the newest UI state
+    var title by remember(item) { mutableStateOf(item.title) }
+    var maker by remember(item) { mutableStateOf(item.maker ?: "") }
+    var description by remember(item) { mutableStateOf(item.description ?: "") }
+    var dimensions by remember(item) { mutableStateOf(item.dims ?: "") }
 
-        // Item dimensions
-        narrowTextBox(text =  defaultText, onValueChange = {})
+    // specifying the onClick functions
+    val onClickSave = {
+        coroutineScope.launch { // a separate, lightweight thread, lets the database work happen in the background
+            viewModel.onUpdateItemTitle(itemId, title)
+            viewModel.onUpdateItemMaker(itemId, maker)
+            viewModel.onUpdateItemDescription(itemId, description)
+        }
 
-        // TODO: make private toggle
+        navController.popBackStack()
+    }
+
+    // functions to pass to the dialog pop-up
+    val onDismissRequest = { showCancelDialog = false }
+
+    val onConfirmation = {
+        // return to the items screen without saving
+        showCancelDialog = false // close pop-up
+
+        // return to previous page
+        navController.popBackStack()
+    } // end onConfirmation
+
+    val onClickCancel = {
+
+        // if any of the fields have changed, prompt the user to confirm that they want to forget their changes
+        if (
+            item.title != title ||
+            item.maker != maker ||
+            item.description != description
+        ) {
+            showCancelDialog = true
+        }
+        // if no changes were made, no need to warn user - just navigate to the home screen
+        else {
+            navController.popBackStack()
+
+        }
+    } // end onClickCancel function definition
+
+    if (showCancelDialog) {
+        CancelEditDialog(
+            onDismissRequest = onDismissRequest,
+            onConfirmation = { onConfirmation() }
+        )
     }
 
 
+    // Main UI Elements
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ScreenTopBar("Edit Item")
 
+        Spacer(Modifier.height(Spacing.Large))
 
+        NarrowTextBox(
+            label = "Title",
+            text = title,
+            onValueChange = { title = it }
+        )
+
+        Spacer(Modifier.height(Spacing.Medium))
+
+        NarrowTextBox(
+            label = "Maker",
+            text = maker,
+            onValueChange = { maker = it }
+        )
+
+        Spacer(Modifier.height(Spacing.Medium))
+
+        LargeTextBox(
+            label = "Description",
+            text = description,
+            onValueChange = { description = it }
+        )
+
+        Spacer(Modifier.height(Spacing.Medium))
+
+        // TODO: Implement later
+//        NarrowTextBox(
+//            label = "Dimensions",
+//            text = dimensions,
+//            onValueChange = { dimensions = it }
+//        )
+
+        // SAVE button - and return to the home items screen
+        TextButton(
+            onClick = { onClickSave() },
+            shape = RoundedCornerShape(Card.roundedCorner),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.inversePrimary)
+        ) {
+            Text(
+                "Save",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
+                )
+        }
+
+        // CANCEL button - do NOT save state of the text boxes, return to home items screen
+        TextButton(
+            onClick = {onClickCancel()},
+
+        ) {
+            Text(
+                "Cancel",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
+    }
+} // end EditItemsScreen
+
+@Composable
+fun CancelEditDialog(onDismissRequest : () -> Unit, onConfirmation : () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = "Revert changes?") },
+        text = { Text("This action cannot be undone") },
+
+        // The user deletes the contact
+        confirmButton = {
+            Button(
+                onClick = onConfirmation
+            ) {
+                Text("Yes, revert my changes")
+            }
+        },
+        // the user does NOT delete the contact
+        dismissButton = {
+            // Add a cancel button so the user isn't stuck
+            TextButton(onClick = onDismissRequest) {
+                Text("No, continue editing")
+            }
+        }
+    )
 }
 
 @Composable
-fun largeTextBox(text : String? = null,
-                 onValueChange : (String) -> Unit,
-                 modifier : Modifier = Modifier
+fun NarrowTextBox(
+    label: String,
+    text: String,
+    onValueChange: (String) -> Unit
 ) {
-    Card(
-        modifier = modifier.fillMaxSize()
-    ) {
-        TextField(
-            value = text ?: "",
-            onValueChange = { onValueChange } // accept the new string and pass it back up
-        )
-    }
+    TextField(
+        value = text,
+        onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(label) }
+    )
 }
 
 @Composable
-fun narrowTextBox(
-    text : String?,
-    onValueChange: (String) -> Unit,
-    modifier : Modifier = Modifier
+fun LargeTextBox(
+    label: String,
+    text: String,
+    onValueChange: (String) -> Unit
 ) {
-    Card(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        TextField(
-            value = text ?: "",
-            onValueChange = {onValueChange}
-        )
-    }
+    TextField(
+        value = text,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 120.dp),
+        label = { Text(label) }
+    )
 }

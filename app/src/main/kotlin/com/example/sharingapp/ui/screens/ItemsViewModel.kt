@@ -68,6 +68,18 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     /**
      *
      */
+    suspend fun onUpdateItemTitle(itemId : Long, newTitle : String) {
+        repository.updateItemName(itemId = itemId, newName = newTitle)
+    }
+
+    suspend fun onUpdateItemMaker(itemId : Long, newMaker : String) {
+        repository.updateItemMaker(itemId = itemId, newMaker = newMaker)
+    }
+
+    suspend fun onUpdateItemDescription(itemId: Long, newDescription : String) {
+        repository.updateItemDescription(itemId = itemId, newDescription = newDescription)
+    }
+
     fun onUpdateItemStatus(itemId : Long) {
 
     }

@@ -37,6 +37,7 @@ import com.example.sharingapp.ProfileIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
 import java.security.InvalidKeyException
+import java.util.function.Predicate.not
 
 /*  --- REMINDERS ---
  *
@@ -130,7 +131,7 @@ fun SharingApp(appContainer : AppContainer,
             AppDestination.HOME.name -> "Your Stash"
             AppDestination.PROFILE.name -> "Profile"
             AppDestination.CONTACTS.name -> "Your Contacts"
-            else -> throw InvalidKeyException("Invalid route given")
+            else -> ""
         }
 
         // TODO: isExpandedScreen
@@ -148,7 +149,10 @@ fun SharingApp(appContainer : AppContainer,
             },
             bottomBar = {
                 AppBottomBar(
-                    destinations = AppDestination.entries,
+                    destinations = AppDestination.entries.filter {
+                        // we do not want Edit_Item on the bottom nav bar
+                        it != AppDestination.EDIT_ITEM
+            },
                     currentDestination = currentRoute,
                     onNavigateToDestination = { route ->
                         navController.navigate(route) {

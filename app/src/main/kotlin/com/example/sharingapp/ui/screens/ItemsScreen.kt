@@ -31,10 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.example.sharingapp.AddBoxIcon
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
 import com.example.sharingapp.model.Item
+import com.example.sharingapp.ui.AppDestination
 import com.example.sharingapp.ui.utils.Dimens
 import com.example.sharingapp.ui.utils.Dimens.Spacing
 import com.example.sharingapp.ui.utils.ExpandableCard
@@ -46,7 +49,8 @@ import com.example.sharingapp.ui.utils.OptionsEnum
 fun ItemsScreen(
     isExpandedScreen: Boolean,
     viewModel: ItemsViewModel,
-    innerPadding : PaddingValues
+    innerPadding : PaddingValues,
+    navController : NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     // track which (if any) card is expanded
@@ -70,11 +74,31 @@ fun ItemsScreen(
         LazyColumn(contentPadding = innerPadding) {
             items(uiState.items, key = { item -> item.id }) { item ->
                 // TODO: add to item row code here
+                // options for the menu
+                val options = listOf<OptionsEnum>(
+                    OptionsEnum.EDIT,
+                    OptionsEnum.DELETE
+                )
+                val onClickOptions = listOf<() -> Unit>(
+                    // First function in the list: go to edit screen
+                    {
+                        val route = "${AppDestination.EDIT_ITEM.name}/${item.id}"
+                        navController.navigate(route){
+                            popUpTo(navController.graph.findStartDestination().id)
+                            }
+
+                    },
+
+                    // Second function in the list - TODO: implement delete item
+                    {}
+                )
                 val isExpanded =
                     ItemRow(
                         item = item,
                         onClick = { onToggle(item) },
-                        isExpanded = (expandedItemId == item.id)
+                        isExpanded = (expandedItemId == item.id),
+                        menuOptions = options,
+                        menuOptionsOnClick = onClickOptions
                     )
             }
         }
@@ -107,7 +131,9 @@ fun ItemRow(item : Item,
             modifier: Modifier =
                 Modifier,
             isExpanded : Boolean,
-            imagePainter : Painter? = null
+            imagePainter : Painter? = null,
+            menuOptions : List<OptionsEnum>,
+            menuOptionsOnClick : List<() -> Unit>
             ) {
 
 
@@ -117,8 +143,8 @@ fun ItemRow(item : Item,
         isExpanded = isExpanded,
         cardTitle = item.title,
         cardSubtitle = item.maker,
-        menuOptions = emptyList<OptionsEnum>(),
-        menuOnClickOptions = emptyList<() -> Unit>(),
+        menuOptions = menuOptions,
+        menuOnClickOptions = menuOptionsOnClick
     )
 
 } // end ItemRow fun

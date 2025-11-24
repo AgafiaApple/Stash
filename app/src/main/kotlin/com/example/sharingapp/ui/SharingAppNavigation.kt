@@ -5,6 +5,7 @@ import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
+import com.example.sharingapp.EditPencilIcon
 import com.example.sharingapp.HomeIcon
 import com.example.sharingapp.ProfileIcon
 
@@ -14,7 +15,9 @@ import com.example.sharingapp.ProfileIcon
 enum class AppDestination(val icon : ComposeIcon) {
     CONTACTS(ContactsIcon()),
     HOME(HomeIcon()),
-    PROFILE(ProfileIcon())
+    PROFILE(ProfileIcon()),
+
+    EDIT_ITEM(EditPencilIcon())
 }
 
 class SharingAppNavigation(navController: NavHostController) {

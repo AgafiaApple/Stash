@@ -103,8 +103,8 @@ fun MenuButton(
                 DropdownMenuItem(
                     text = {Text(option.action)},
                     onClick = {
-                        click()
                         expanded = false
+                        click()
                     }
                 )
             }
