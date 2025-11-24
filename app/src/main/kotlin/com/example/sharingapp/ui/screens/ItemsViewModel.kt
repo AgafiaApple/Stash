@@ -72,16 +72,22 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     /**
      *
      */
-    suspend fun onUpdateItemTitle(itemId : Long, newTitle : String) {
-        repository.updateItemName(itemId = itemId, newName = newTitle)
+    fun onUpdateItemTitle(itemId : Long, newTitle : String) {
+        viewModelScope.launch {
+            repository.updateItemName(itemId = itemId, newName = newTitle)
+        }
     }
 
-    suspend fun onUpdateItemMaker(itemId : Long, newMaker : String) {
-        repository.updateItemMaker(itemId = itemId, newMaker = newMaker)
+    fun onUpdateItemMaker(itemId : Long, newMaker : String) {
+        viewModelScope.launch {
+            repository.updateItemMaker(itemId = itemId, newMaker = newMaker)
+        }
     }
 
-    suspend fun onUpdateItemDescription(itemId: Long, newDescription : String) {
-        repository.updateItemDescription(itemId = itemId, newDescription = newDescription)
+     fun onUpdateItemDescription(itemId: Long, newDescription : String) {
+         viewModelScope.launch {
+             repository.updateItemDescription(itemId = itemId, newDescription = newDescription)
+         }
     }
 
     fun onUpdateItemStatus(itemId : Long) {
@@ -91,6 +97,12 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     fun onDeleteItem(itemId : Long) {
         viewModelScope.launch {
             repository.deleteItem(itemId)
+        }
+    }
+
+    fun onAddItem(item : Item) {
+        viewModelScope.launch {
+            repository.addItem(item)
         }
     }
 

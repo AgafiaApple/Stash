@@ -3,6 +3,7 @@ package com.example.sharingapp.ui
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import com.example.sharingapp.AddBoxIcon
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
 import com.example.sharingapp.EditPencilIcon
@@ -17,7 +18,9 @@ enum class AppDestination(val icon : ComposeIcon) {
     HOME(HomeIcon()),
     PROFILE(ProfileIcon()),
 
-    EDIT_ITEM(EditPencilIcon())
+    EDIT_ITEM(EditPencilIcon()),
+
+    ADD_ITEM(AddBoxIcon())
 }
 
 class SharingAppNavigation(navController: NavHostController) {

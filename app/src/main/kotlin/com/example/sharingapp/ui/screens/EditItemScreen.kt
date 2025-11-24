@@ -39,7 +39,8 @@ import com.example.sharingapp.ui.AppDestination
 import com.example.sharingapp.ui.ScreenTopBar
 import com.example.sharingapp.ui.utils.Dimens.Card
 import com.example.sharingapp.ui.utils.Dimens.Spacing
-import kotlinx.coroutines.launch
+import com.example.sharingapp.ui.utils.NarrowTextBox
+import com.example.sharingapp.ui.utils.LargeTextBox
 
 @Composable
 fun EditItemScreen(
@@ -67,13 +68,12 @@ fun EditItemScreen(
 
     // specifying the onClick functions
     val onClickSave = {
-        coroutineScope.launch { // a separate, lightweight thread, lets the database work happen in the background
-            viewModel.onUpdateItemTitle(itemId, title)
-            viewModel.onUpdateItemMaker(itemId, maker)
-            viewModel.onUpdateItemDescription(itemId, description)
-        }
+        viewModel.onUpdateItemTitle(itemId, title)
+        viewModel.onUpdateItemMaker(itemId, maker)
+        viewModel.onUpdateItemDescription(itemId, description)
 
         navController.popBackStack()
+
     }
 
     // functions to pass to the dialog pop-up
@@ -165,14 +165,14 @@ fun EditItemScreen(
                 "Save",
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
-                )
+            )
         }
 
         // CANCEL button - do NOT save state of the text boxes, return to home items screen
         TextButton(
-            onClick = {onClickCancel()},
+            onClick = { onClickCancel() },
 
-        ) {
+            ) {
             Text(
                 "Cancel",
                 style = MaterialTheme.typography.bodySmall
@@ -180,13 +180,14 @@ fun EditItemScreen(
         }
 
     }
-} // end EditItemsScreen
+}
+
 
 @Composable
 fun CancelEditDialog(onDismissRequest : () -> Unit, onConfirmation : () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text(text = "Revert changes?") },
+        title = { Text(text = "Discard changes?") },
         text = { Text("This action cannot be undone") },
 
         // The user deletes the contact
@@ -194,7 +195,7 @@ fun CancelEditDialog(onDismissRequest : () -> Unit, onConfirmation : () -> Unit)
             Button(
                 onClick = onConfirmation
             ) {
-                Text("Yes, revert my changes")
+                Text("Yes, discard my changes")
             }
         },
         // the user does NOT delete the contact
@@ -204,35 +205,5 @@ fun CancelEditDialog(onDismissRequest : () -> Unit, onConfirmation : () -> Unit)
                 Text("No, continue editing")
             }
         }
-    )
-}
-
-@Composable
-fun NarrowTextBox(
-    label: String,
-    text: String,
-    onValueChange: (String) -> Unit
-) {
-    TextField(
-        value = text,
-        onValueChange = onValueChange,
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(label) }
-    )
-}
-
-@Composable
-fun LargeTextBox(
-    label: String,
-    text: String,
-    onValueChange: (String) -> Unit
-) {
-    TextField(
-        value = text,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 120.dp),
-        label = { Text(label) }
     )
 }

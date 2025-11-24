@@ -47,6 +47,7 @@ import com.example.sharingapp.ui.utils.Dimens
 import com.example.sharingapp.ui.utils.Dimens.Spacing
 import com.example.sharingapp.ui.utils.ExpandableCard
 import com.example.sharingapp.ui.utils.OptionsEnum
+import kotlinx.coroutines.CoroutineScope
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +56,7 @@ fun ItemsScreen(
     isExpandedScreen: Boolean,
     viewModel: ItemsViewModel,
     innerPadding : PaddingValues,
-    navController : NavHostController
+    navController : NavHostController,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     // track which (if any) card is expanded
@@ -110,7 +111,7 @@ fun ItemsScreen(
                 //
                 val onConfirmDelete = {
                     showDeleteDialog = false
-                    viewModel.onDeleteItem(item.id)
+
 
                 }
                 ItemRow(
@@ -133,9 +134,11 @@ fun ItemsScreen(
         } // end LazyColumn block
 
 
-        // TODO: onClick should navigate the user to the AddItem page
+
         FloatingActionButton(
-            onClick = {},
+            onClick = {
+                navController.navigate(AppDestination.ADD_ITEM.name)
+            },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(Dimens.Spacing.Medium),

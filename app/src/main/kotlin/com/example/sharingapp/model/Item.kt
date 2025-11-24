@@ -20,16 +20,15 @@ data class Item (
             // we can use @Embedded instead of making a TypeConverter b/c Dimensions is a data class
     @Embedded
     var dims : Dimensions,
-    // idx will only be used for the fake item repository since FakeItemRepository does not use a Room database
-    val idx : Long? = null,
+
+    val useDao : Boolean = true,
 
     var status : Status = Status.AVAILABLE
 
 ) {
 
     @PrimaryKey(autoGenerate=true)
-    val id : Long = idx ?: 0
-
+    val id : Long = if (useDao) 0 else getThenIncrementIdx()
 
     // default is that there is no borrower
     var borrower : Contact? = null
@@ -44,6 +43,16 @@ data class Item (
 //            // the app will only ever need the base64 format
 //            return base64ToBitmap(this.image_base64)
 //        }
+
+    companion object {
+        var nextIdx : Long  = 0
+        fun getThenIncrementIdx() : Long {
+            val idx : Long = nextIdx
+            nextIdx = nextIdx + 1
+            return idx
+        }
+
+    }
 
 
 }

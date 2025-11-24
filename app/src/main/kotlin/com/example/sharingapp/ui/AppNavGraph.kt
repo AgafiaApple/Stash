@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.sharingapp.data.AppContainer
+import com.example.sharingapp.ui.screens.AddItemScreen
 import com.example.sharingapp.ui.screens.ContactsScreen
 import com.example.sharingapp.ui.screens.ContactsViewModel
 import com.example.sharingapp.ui.screens.EditItemScreen
@@ -82,6 +83,27 @@ fun AppNavGraph(
                 itemId = itemId, // Pass ID, not the Item object
                 navController = navController
             )
+        }
+
+        // ADD ITEM Screen
+        composable(
+            route = AppDestination.ADD_ITEM.name,
+
+        ) {
+
+            val itemsViewModel: ItemsViewModel = viewModel(
+                factory = ItemsViewModel.provideFactory(
+                    itemsRepository = appContainer.itemsRepository
+                )
+            )
+
+            AddItemScreen(
+                isExpandedScreen = isExpandedScreen,
+                viewModel = itemsViewModel,
+                innerPadding = innerPadding,
+                navController = navController
+            )
+
         }
 
         // CONTACTS composable
