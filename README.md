@@ -1,11 +1,13 @@
-# SharingApp
+***Ongoing - not all features have been implemented***
+
+# Stash
 
 **Note**: I appreciate any critique on how this application can be improved! 
 ## Introduction
-SharingApp is a prototype trading app I built to learn app development and apply Software Engineering concepts. Users can track what items they have and borrow items from other users. 
+Stash is a prototype trading app I built to learn app development and apply Software Engineering concepts. Users can track what items they have and borrow items from other users. 
 
 ## Background and Motivations
-SharingApp started out as just a run-of-the-mill project for my Software Engineering class, but after lots of research and learning hurdles, it's become a very meaningful app. 
+Stash started out as just a run-of-the-mill project for my Software Engineering class, but after lots of research and learning hurdles, it's become a very meaningful app. 
 
 Once I started learning about Android application development and reading the documentation, I decided to make this app the training grounds for applying all of the Software Engineering concepts I was learning. 
 
@@ -18,7 +20,7 @@ Because of those challenges and the quick learning required to understand and mi
 With that said, **I would be very grateful for any critique on how the app can be improved**. :)
 
 
-## Skills Applied 
+## Skills Applied
 * Android App Development
   * [Google architecture standards](https://developer.android.com/topic/architecture)
   * Compose

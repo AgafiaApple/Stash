@@ -43,6 +43,7 @@ import java.security.InvalidKeyException
  *    // TODO LIST:
  *      * check that every composable accepts an optional modifier - good UI practice
  *      * make specification of spacing (.dp values) as high-level as possible (e.g. better to edit the spacing of a row than each item in the row)
+ *      * implement functionality to adjust for different screen sizes
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
