@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -36,8 +37,7 @@ import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ProfileIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
-import java.security.InvalidKeyException
-import java.util.function.Predicate.not
+import com.example.sharingapp.ui.utils.Type
 
 /*  --- REMINDERS ---
  *
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            AppTheme(dynamicColor = false){
+            AppTheme(dynamicColor = true){
 
                 Column{
                     // logo header that will always be seen
@@ -70,7 +70,6 @@ class MainActivity : ComponentActivity() {
                     // call the app's primary composable
                     SharingApp(appContainer, navController = navController)
                 }
-
 
             }
 
@@ -90,7 +89,12 @@ fun AppHeaderBar(
 
         CenterAlignedTopAppBar(
             title = {
-                Text(title, style = MaterialTheme.typography.titleLarge)
+                Text(
+                    title,
+                    style = Type.Bar.getTitle(),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontWeight = FontWeight.Bold
+                )
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             actions = {

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.sharingapp.ComposeIcon
+import com.example.sharingapp.ui.utils.Type
 
 
 @Composable
@@ -50,8 +51,11 @@ fun AppBottomBar(
                     )
                 },
                 label = {
+                    val upper = destination.name
+                    val properCase = upper.take(1) + upper.lowercase().substring(1)
                     Text(
-                        text = destination.name
+                        text = properCase,
+                        style = Type.Row.getTitle()
                     )
                 }
             ) // end NavigationBarItem

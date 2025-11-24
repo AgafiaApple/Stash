@@ -1,4 +1,5 @@
 package com.example.sharingapp.ui.theme
+
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -12,20 +13,19 @@ import com.example.sharingapp.R
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
     providerPackage = "com.google.android.gms",
-    certificates = R.font.font_certs
+    certificates = R.array.com_google_android_gms_fonts_certs
 )
-
 
 val bodyFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("PT Sans"),
+        googleFont = GoogleFont("Lato"),
         fontProvider = provider,
     )
 )
 
 val displayFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Nunito"),
+        googleFont = GoogleFont("Dongle"),
         fontProvider = provider,
     )
 )
@@ -50,4 +50,3 @@ val AppTypography = Typography(
     labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily),
     labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily),
 )
-

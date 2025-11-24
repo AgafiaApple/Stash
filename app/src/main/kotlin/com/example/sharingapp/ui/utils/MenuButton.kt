@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
-import com.example.sharingapp.ui.theme.outlineDark
 import java.security.InvalidKeyException
 
 enum class OptionsEnum(val action : String) {

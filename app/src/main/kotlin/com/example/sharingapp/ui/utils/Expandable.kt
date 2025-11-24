@@ -85,10 +85,13 @@ fun <T>ExpandableCard(
 
             Column {
                 // the name of the contact or item
-                Text(cardTitle, style = MaterialTheme.typography.titleMedium)
+                Text(cardTitle, style = Type.Row.getTitle())
                 // add subtitle if provided
                 if (cardSubtitle != null){
-                    Text(cardSubtitle)
+                    Text(
+                        cardSubtitle,
+                        style = Type.Row.getSubtitle()
+                    )
                 }
 
             }
@@ -119,9 +122,9 @@ fun <T>ExpandableCard(
 
             Spacer(Modifier.height(Spacing.Medium))
             if (cardDescription != null) {
-                Text(cardDescription, style = MaterialTheme.typography.bodyMedium)
+                Text(cardDescription, style = Type.Row.getBody())
             } else {
-                Text("No description", style = MaterialTheme.typography.bodyMedium)
+                Text("No description", style = Type.Row.getBody())
             }
 
 

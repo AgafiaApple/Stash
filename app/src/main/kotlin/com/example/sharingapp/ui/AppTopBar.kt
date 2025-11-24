@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ContactsIcon
 import com.example.sharingapp.ProfileIcon
+import com.example.sharingapp.ui.utils.Type
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -17,7 +18,10 @@ fun ScreenTopBar(
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = screenTitle)
+            Text(
+                text = screenTitle,
+                style = Type.Bar.getSubtitleSmall()
+                )
         }
     ) // end CenterAlignedTopAppBar
 
