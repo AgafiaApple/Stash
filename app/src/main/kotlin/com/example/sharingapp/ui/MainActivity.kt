@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -79,13 +80,12 @@ fun AppHeaderBar(
     title : String,
     onClickProfile : () -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-    ) {
+
         CenterAlignedTopAppBar(
             title = {
                 Text(title, style = MaterialTheme.typography.titleLarge)
             },
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             actions = {
                 IconButton(onClick = onClickProfile) {
                     Icon(
@@ -95,7 +95,6 @@ fun AppHeaderBar(
                 }
             }
         ) // end CenterAlignedTopAppBar
-    } // end Card block
 
 
 }
