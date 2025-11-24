@@ -20,6 +20,9 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FloatingActionButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -40,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sharingapp.AddBoxIcon
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
 import com.example.sharingapp.ui.utils.CircleInitialIcon
@@ -47,6 +51,7 @@ import com.example.sharingapp.ui.utils.ContactOption
 import com.example.sharingapp.ui.utils.Dimens
 import com.example.sharingapp.ui.utils.MenuButton
 import com.example.sharingapp.ui.utils.OptionsEnum
+
 
 @Composable
 fun ContactsScreen(
@@ -58,30 +63,52 @@ fun ContactsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // we need this outer box to keep the list and add-icon from overlapping
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        LazyColumn(contentPadding = inner_padding) {
+            items(uiState.contacts, key = {contact -> contact.id}) { contact ->
+                // by default, extra info about contact not shown
+                var showClickContact by remember {mutableStateOf(false)}
 
-    LazyColumn(contentPadding = inner_padding) {
-        items(uiState.contacts, key = {contact -> contact.id}) { contact ->
-            // by default, extra info about contact not shown
-            var showClickContact by remember {mutableStateOf(false)}
+                // each contact has the option to delete it
+                val onDeleteContact = {
+                    viewModel.deleteContact(contact.id)
 
-            // each contact has the option to delete it
-            val onDeleteContact = {
-                viewModel.deleteContact(contact.id)
+                }
+
+                ContactRow(contact,
+                    onDeleteContact = onDeleteContact,
+                    // clicking the contact can slide out the contact to see more info
+                    onClickContact = {!showClickContact}
+                )
+
+                // inform the user that the "more information" for contact has not been implemented yet
+                if(showClickContact) {
+                    ClickContactNotImplemented(onDismiss = {showClickContact = false})
+                }
+            } // end items block
+        } // end LazyColumn block
+
+        // add-item button at the bottom right of the screen
+
+            // TODO: onClick should navigate the user to the AddItem page
+            FloatingActionButton(
+                onClick = {},
+                modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(Dimens.Spacing.Medium),
+                elevation = FloatingActionButtonDefaults.elevation(2.dp)
+            ) {
+                Icon(
+                    imageVector = ComposeIcon.asImageVector(AddBoxIcon()),
+                    contentDescription = "Add item"
+                )
 
             }
+    } // end outer box block
 
-            ContactRow(contact,
-                onDeleteContact = onDeleteContact,
-                // clicking the contact can slide out the contact to see more info
-                onClickContact = {!showClickContact}
-            )
-
-            // inform the user that the "more information" for contact has not been implemented yet
-            if(showClickContact) {
-                ClickContactNotImplemented(onDismiss = {showClickContact = false})
-            }
-        } // end items block
-    } // end LazyColumn block
 } // end ContactsScreen
 
 @Composable
