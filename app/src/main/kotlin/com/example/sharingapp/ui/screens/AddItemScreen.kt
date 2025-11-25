@@ -56,22 +56,24 @@ fun AddItemScreen(
     // only becomes true if the user decides to cancel their changes
     var showCancelDialog by remember { mutableStateOf(false) }
 
-    // for suspend functions that must be run within a coroutine
-    val coroutineScope = rememberCoroutineScope()
 
-    // TODO: implement Dimensions feature later or just delete
-    val item = Item("", "", "", Dimensions(0, 0, 0))
 
     // using remember(item) instead of just remember so that remember only every has the newest UI state
     // Still not sure exactly why it works better...
-    var title by remember(item) { mutableStateOf(item.title) }
-    var maker by remember(item) { mutableStateOf(item.maker ?: "") }
-    var description by remember(item) { mutableStateOf(item.description ?: "") }
-    var dimensions by remember(item) { mutableStateOf(item.dims ?: "") }
+    var title by remember { mutableStateOf("") }
+    var maker by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf( "") }
+    // TODO: either delete this functionality or implement it correctly
+//    var dimensions by remember { mutableStateOf("") }
 
     // specifying the onClick functions
     val onClickSave = {
-            viewModel.onAddItem(item)
+            val itemTitle = title
+            val itemMaker = maker
+            val itemDescription = description
+            val newItem = Item(itemTitle, itemMaker, itemDescription, Dimensions(0, 0, 0))
+
+            viewModel.onAddItem(newItem)
             navController.popBackStack()
         }
 
@@ -91,9 +93,9 @@ fun AddItemScreen(
 
         // if any of the fields have changed, prompt the user to confirm that they want to forget their changes
         if (
-            item.title != title ||
-            item.maker != maker ||
-            item.description != description
+            !title.isEmpty()||
+            !maker.isEmpty()||
+            !description.isEmpty()
         ) {
             showCancelDialog = true
         }
@@ -120,7 +122,7 @@ fun AddItemScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ScreenTopBar("Edit Item")
+        ScreenTopBar("Add Item")
 
         Spacer(Modifier.height(Spacing.Large))
 

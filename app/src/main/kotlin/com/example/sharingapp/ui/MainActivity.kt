@@ -1,6 +1,5 @@
 package com.example.sharingapp.ui
 
-import android.R
 import android.app.Activity
 import android.os.Bundle
 import android.window.SplashScreen
@@ -25,9 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -35,8 +38,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.ProfileIcon
+import com.example.sharingapp.R
+import com.example.sharingapp.SettingsIcon
 import com.example.sharingapp.data.AppContainer
 import com.example.sharingapp.ui.theme.AppTheme
+import com.example.sharingapp.ui.utils.NotImplemented
 import com.example.sharingapp.ui.utils.Type
 
 /*  --- REMINDERS ---
@@ -54,12 +60,16 @@ class MainActivity : ComponentActivity() {
         val appContainer = (application as SharingApplication).container
 
 
+
         setContent {
-            AppTheme(dynamicColor = true){
+            AppTheme(dynamicColor = false){
+
+                // show a not-implemented dialog box if showDialog is true
+                var showSettingsDialog by remember { mutableStateOf(false) }
 
                 Column{
                     // logo header that will always be seen
-                    AppHeaderBar("Stash", {})
+                    AppHeaderBar("Stash", {showSettingsDialog = true})
 
                     // title of the current screen
 
@@ -71,10 +81,18 @@ class MainActivity : ComponentActivity() {
                     SharingApp(appContainer, navController = navController)
                 }
 
-            }
+                if (showSettingsDialog == true) {
+                    NotImplemented(
+                        onDismiss =  {showSettingsDialog = false},
+                        "Function not implemented",
+                        "The settings feature has not been implemented yet"
+                    )
+                } // end if
+
+            } // end AppTheme block
 
 
-        } // end setContact block
+        } // end setContent block
 
     } // end onCreate
 }
@@ -100,8 +118,8 @@ fun AppHeaderBar(
             actions = {
                 IconButton(onClick = onClickProfile) {
                     Icon(
-                        imageVector = ComposeIcon.asImageVector(ProfileIcon()),
-                        contentDescription = "Profile"
+                        imageVector = ComposeIcon.asImageVector(SettingsIcon()),
+                        contentDescription = "Settings"
                     )
                 }
             }
@@ -123,8 +141,6 @@ fun SharingApp(appContainer : AppContainer,
         }
 
 
-        // TODO : pass down/use this functionality
-        val coroutineScope = rememberCoroutineScope()
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute =
@@ -155,7 +171,7 @@ fun SharingApp(appContainer : AppContainer,
                 AppBottomBar(
                     destinations = AppDestination.entries.filter {
                         // we do not want Edit_Item on the bottom nav bar
-                        it != AppDestination.EDIT_ITEM
+                        it != AppDestination.EDIT_ITEM && it!= AppDestination.ADD_ITEM
             },
                     currentDestination = currentRoute,
                     onNavigateToDestination = { route ->

@@ -23,7 +23,7 @@ class ContactsActivity : ComponentActivity(){
     val contactsFile = File(contactsPath)
 
     // TODO: next two lines are just fake test data that I will add to a test case soon
-    val testContact = Contact("Agafia", "appleb@gmail.com")
+    val testContact = Contact("Agafia", "agafiaapple", "appleb@gmail.com", description = "Beep-bobbity-boop")
     val testList = ContactListConstructor()
 
 

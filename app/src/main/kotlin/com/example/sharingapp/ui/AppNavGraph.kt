@@ -18,6 +18,7 @@ import com.example.sharingapp.ui.screens.ContactsViewModel
 import com.example.sharingapp.ui.screens.EditItemScreen
 import com.example.sharingapp.ui.screens.ItemsScreen
 import com.example.sharingapp.ui.screens.ItemsViewModel
+import com.example.sharingapp.ui.screens.ProfileScreen
 
 // TODO: make dependent on user's device using conditional statements
 const val tempIsExpandedScreen : Boolean = false
@@ -123,6 +124,13 @@ fun AppNavGraph(
                 isExpandedScreen = tempIsExpandedScreen
             )
         }
+
+        composable(
+            route = AppDestination.PROFILE.name
+        ) {
+            ProfileScreen(innerPadding = innerPadding)
+        }
+
 
     } // end NavHost block
 

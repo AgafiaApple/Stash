@@ -42,17 +42,21 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sharingapp.AddBoxIcon
 import com.example.sharingapp.ComposeIcon
 import com.example.sharingapp.MenuVertIcon
+import com.example.sharingapp.R
 import com.example.sharingapp.ui.utils.CircleInitialIcon
 import com.example.sharingapp.ui.utils.ContactOption
 import com.example.sharingapp.ui.utils.Dimens
 import com.example.sharingapp.ui.utils.ExpandableCard
 import com.example.sharingapp.ui.utils.MenuButton
 import com.example.sharingapp.ui.utils.OptionsEnum
+import com.example.sharingapp.ui.utils.NotImplemented
+
 
 
 @Composable
@@ -65,6 +69,8 @@ fun ContactsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var expandedContactId by remember {mutableStateOf<Long?>(null)}
+
+    var showAddBoxDialog by remember {mutableStateOf(false)}
 
     val onToggleContact = {contact : Contact ->
         // if the contact is clicked when closed, expand it
@@ -115,31 +121,6 @@ fun ContactsScreen(
 
                 }
 
-                /*
-                    Row(
-        Modifier.padding(Dimens.Spacing.Medium),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        // profile icon
-        CircleInitialIcon(
-            name = item.title,
-            surfaceColor = MaterialTheme.colorScheme.inversePrimary,
-            textColor = MaterialTheme.colorScheme.primary
-        )
-
-        // main informational row
-        ExpandableCard(
-            item = item,
-            onToggle = onClick,
-            isExpanded = isExpanded,
-            cardTitle = item.title,
-            cardSubtitle = item.maker,
-            menuOptions = emptyList<OptionsEnum>(),
-            menuOnClickOptions = emptyList<() -> Unit>()
-        )
-    }
-                 */
-
 
                 // inform the user that the "more information" for contact has not been implemented yet
                 if(showClickContact) {
@@ -149,10 +130,9 @@ fun ContactsScreen(
         } // end LazyColumn block
 
         // add-item button at the bottom right of the screen
-
             // TODO: onClick should navigate the user to the AddContact page
             FloatingActionButton(
-                onClick = {},
+                onClick = {showAddBoxDialog = true},
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(Dimens.Spacing.Medium),
@@ -166,6 +146,14 @@ fun ContactsScreen(
 
             }
     } // end outer box block
+
+    if (showAddBoxDialog) {
+        NotImplemented(
+            onDismiss = {showAddBoxDialog = false},
+            "Function not implemented",
+            "The add contact feature has not been implemented yet"
+            )
+    }
 
 } // end ContactsScreen
 
@@ -202,17 +190,19 @@ fun ContactRowExpandable(
             contact,
             isExpanded = isExpanded,
             onToggle = onClickContact,
-            cardTitle = contact.username,
+            cardTitle = contact.displayName,
+            cardSubtitle = "@${contact.username}",
+            cardDescription = contact.description,
             menuOptions = options,
             menuOnClickOptions = onClickOptions,
-            includeImage = false
+            imagePainter = painterResource(R.drawable.image_placeholder)
         )
 
     /* 3. If the user clicked one of the menu options */
     if (showEditDialog) {
         val onDismissRequest = {showEditDialog = false}
         // TODO: replace with a dialog that uses an onEditContact function passed into the row
-        EditNotImplemented(onDismiss = onDismissRequest)
+        NotImplemented(onDismiss = onDismissRequest, "Function not implemented", "The edit contact feature has not been implemented yet")
     }
 
     if (showDeleteDialog) {
@@ -230,92 +220,6 @@ fun ContactRowExpandable(
 
 
 } // end ContactRowExpandable composable
-
-@Composable
-fun ContactRow(
-    contact : Contact,
-    onClickContact : () -> Unit,
-    // keep the viewModel interaction at the topmost level of the UI -- not coupling
-    // ContactRow with the viewModel by making the caller pass in the actions
-    onDeleteContact : () -> Unit,
-) {
-
-    // only show the option if "show" is true
-    var showEditDialog by remember {mutableStateOf(false)}
-
-    var showDeleteDialog by remember {mutableStateOf(false)}
-
-    // param for the menu composable
-    val options = listOf(
-        OptionsEnum.EDIT,
-        OptionsEnum.DELETE
-    )
-
-    // param for the menu composable
-    // the order of the onClick list must correspond with the options list
-    val onClickOptions = listOf(
-        // dialog for editing a contact is shown
-        {showEditDialog = true},
-        // dialog for deleting a contact is shown
-        {showDeleteDialog = true}
-    )
-
-    /* 1. THE Contact List UI */
-    Card(
-        modifier = Modifier.padding(Dimens.Spacing.Medium),
-        onClick = onClickContact,
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.Card.elevation) // TODO: replace 6.dp with a predefined value from utils
-    ) {
-            ListItem(
-                headlineContent = { Text(contact.username) },
-                // TODO: Contact class should include a brief description -- and the card can slide down to show the whole description if the user clicks on it
-//            supportingContent = { Text(contact.email) },
-                colors = ListItemDefaults.colors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ),
-                leadingContent = {
-                    CircleInitialIcon(
-                        contact.username,
-                        surfaceColor = MaterialTheme.colorScheme.inversePrimary,
-                        textColor = MaterialTheme.colorScheme.primary
-                    )
-                },
-    /* 2. Each contact has options to edit/delete */
-                trailingContent = {
-                    Column(verticalArrangement = Arrangement.Center){
-                        // our custom menu composable
-                        MenuButton(options, onClickOptions)
-                    }
-
-                }
-            ) // end ListItem
-
-        //
-
-    } // end Row block
-
-    /* 3. If the user clicked one of the menu options */
-    if (showEditDialog) {
-        val onDismissRequest = {showEditDialog = false}
-        // TODO: replace with a dialog that uses an onEditContact function passed into the row
-        EditNotImplemented(onDismiss = onDismissRequest)
-    }
-
-    if (showDeleteDialog) {
-        val onDismissRequest = {showDeleteDialog = false}
-        DeleteContact(
-            onDismissRequest = onDismissRequest,
-            onConfirmation = {
-                onDeleteContact()
-                showDeleteDialog = false // close dialog box
-                             },
-            contact = contact
-        )
-
-    }
-
-
-}// end ContactRow composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -343,23 +247,7 @@ fun DeleteContact(contact : Contact, onDismissRequest : () -> Unit, onConfirmati
     )
 } // end DeleteContact composable
 
-@Composable
-fun EditNotImplemented(onDismiss : () -> Unit) {
-    // Alert dialog must have at least an onDismiss and at least one Button
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Function not implemented")},
-        text = { Text("The editing contacts feature has not been implemented yet") },
-        // the user confirms that they understand and the dialog closes
-        confirmButton = {
-            TextButton(
-                onClick = onDismiss
-            ) {Text("Okay")}
-        }
 
-
-    )
-}
 
 @Composable
 fun ClickContactNotImplemented(onDismiss : () -> Unit) {

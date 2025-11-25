@@ -21,8 +21,6 @@ data class Item (
     @Embedded
     var dims : Dimensions,
 
-    val useDao : Boolean = true,
-
     var status : Status = Status.AVAILABLE,
 
     val idx : Long? = null

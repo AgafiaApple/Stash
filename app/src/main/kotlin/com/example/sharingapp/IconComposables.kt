@@ -53,3 +53,8 @@ class MenuVertIcon : ComposeIcon() {
     override val image = R.drawable.menu_vertical_icon
     override val name = "menu"
 }
+
+class SettingsIcon : ComposeIcon() {
+    override val image = R.drawable.settings
+    override val name = "settings"
+}

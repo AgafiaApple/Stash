@@ -17,9 +17,15 @@ class FakeContactsRepository : ContactsRepository {
     // to use Dao here, it could do it more automatically)
     private val _contactsFlow by lazy {
         MutableStateFlow(listOf(
-            Contact("DanTheDog", "dandog@gmail.com", 0),
-            Contact("PercyTheParrot", "percysquawks@proton.me", 1),
-            Contact("JustJenny", "jenny_8675309@gmail.com", 2)
+            Contact("Dan", "DanTheDog", "dandog@gmail.com",
+                description = "Just a blue-collared dog. If you need to borrow a grill, just bark.",
+                idx = getThenIncrementIdx()),
+            Contact("Percepolis", "PercyTheParrot", "percysquawks@proton.me",
+                description = "Enjoys collecting feathers from other birds and has lots of quills to share.",
+                idx = getThenIncrementIdx()),
+            Contact("Jenny Judelson", "JustJenny", "jenny_8675309@gmail.com",
+                description = "I don't have much of a collection yet, but I am eager to start!",
+                idx = getThenIncrementIdx())
         )
 
         ) // end MutableStateFlow val
@@ -45,5 +51,14 @@ class FakeContactsRepository : ContactsRepository {
             currentList.filter {it.id != id}
         }
         return true
+    }
+
+    companion object {
+        var nextIdx : Long = 0
+        fun getThenIncrementIdx() : Long {
+            val idx = nextIdx
+            nextIdx = nextIdx + 1
+            return idx
+        }
     }
 }

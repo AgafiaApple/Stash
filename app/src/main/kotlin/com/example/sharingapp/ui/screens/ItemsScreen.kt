@@ -111,6 +111,7 @@ fun ItemsScreen(
                 //
                 val onConfirmDelete = {
                     showDeleteDialog = false
+                    viewModel.onDeleteItem(item.id)
 
 
                 }
@@ -177,6 +178,7 @@ fun ItemRow(item : Item,
         cardSubtitle = item.maker,
         menuOptions = menuOptions,
         menuOnClickOptions = menuOptionsOnClick,
+        cardDescription = item.description
     )
 
 

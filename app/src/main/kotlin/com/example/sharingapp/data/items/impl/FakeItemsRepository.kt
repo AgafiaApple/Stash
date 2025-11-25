@@ -168,7 +168,7 @@ class FakeItemsRepository : ItemsRepository {
 
     }
 
-    private fun getThenIncrememntIdx() : Long {
+    fun getThenIncrememntIdx() : Long {
         val idx = this.nextIdx
         this.nextIdx = this.nextIdx + 1
         return idx

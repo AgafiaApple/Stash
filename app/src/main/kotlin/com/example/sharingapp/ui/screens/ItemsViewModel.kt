@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sharingapp.data.items.impl.FakeItemsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -101,8 +102,17 @@ class ItemsViewModel(private val repository: ItemsRepository) : ViewModel() {
     }
 
     fun onAddItem(item : Item) {
+        lateinit var newItem : Item
+        // if the repository does not use a Room database
+        if (this.repository is FakeItemsRepository) {
+            val idx = this.repository.getThenIncrememntIdx()
+            newItem = Item(item.title, item.maker, item.description, item.dims, idx = idx)
+        }
+        else {
+            newItem = item
+        }
         viewModelScope.launch {
-            repository.addItem(item)
+            repository.addItem(newItem)
         }
     }
 
