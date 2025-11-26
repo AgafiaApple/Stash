@@ -63,7 +63,6 @@ import com.example.sharingapp.ui.utils.NotImplemented
 fun ContactsScreen(
     isExpandedScreen : Boolean,
     viewModel : ContactsViewModel,
-    onNavigateToItems : () -> Unit,
     inner_padding : PaddingValues = PaddingValues()
 
 ) {
@@ -186,17 +185,17 @@ fun ContactRowExpandable(
     )
 
 
-        ExpandableCard(
-            contact,
-            isExpanded = isExpanded,
-            onToggle = onClickContact,
-            cardTitle = contact.displayName,
-            cardSubtitle = "@${contact.username}",
-            cardDescription = contact.description,
-            menuOptions = options,
-            menuOnClickOptions = onClickOptions,
-            imagePainter = painterResource(R.drawable.image_placeholder)
-        )
+    ExpandableCard(
+        contact,
+        isExpanded = isExpanded,
+        onToggle = onClickContact,
+        cardTitle = contact.displayName,
+        cardSubtitle = "@${contact.username}",
+        cardDescription = contact.description,
+        menuOptions = options,
+        menuOnClickOptions = onClickOptions,
+        imagePainter = painterResource(R.drawable.image_placeholder)
+    )
 
     /* 3. If the user clicked one of the menu options */
     if (showEditDialog) {
