@@ -12,12 +12,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.sharingapp.data.AppContainer
+import com.example.sharingapp.data.contacts.impl.FakeOtherUsersRepository
 import com.example.sharingapp.ui.screens.AddItemScreen
 import com.example.sharingapp.ui.screens.ContactsScreen
 import com.example.sharingapp.ui.screens.ContactsViewModel
 import com.example.sharingapp.ui.screens.EditItemScreen
 import com.example.sharingapp.ui.screens.ItemsScreen
 import com.example.sharingapp.ui.screens.ItemsViewModel
+import com.example.sharingapp.ui.screens.OtherUsersScreen
+import com.example.sharingapp.ui.screens.OtherUsersViewModel
 import com.example.sharingapp.ui.screens.ProfileScreen
 
 // TODO: make dependent on user's device using conditional statements
@@ -119,8 +122,6 @@ fun AppNavGraph(
 
             ContactsScreen(
                 viewModel = contactsViewModel,
-                onNavigateToItems = { navController.navigate(AppDestination.CONTACTS.name)
-                },
                 isExpandedScreen = tempIsExpandedScreen
             )
         }
@@ -129,6 +130,20 @@ fun AppNavGraph(
             route = AppDestination.PROFILE.name
         ) {
             ProfileScreen(innerPadding = innerPadding)
+        }
+
+        composable(
+
+            route = AppDestination.USERS.name
+        ) {
+            // TODO: make a OtherUsersViewModel
+            val viewModel : OtherUsersViewModel = viewModel(
+                factory = OtherUsersViewModel.provideFactory(
+                    contactsRepository = appContainer.otherUsersRepository
+                )
+            )
+
+            OtherUsersScreen(viewModel, innerPadding = innerPadding, isExpandedScreen = isExpandedScreen)
         }
 
 

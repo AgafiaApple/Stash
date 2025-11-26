@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OtherUsersScreen(
-    viewModel : ContactsViewModel,
+    viewModel : OtherUsersViewModel,
     innerPadding : PaddingValues = PaddingValues(),
     isExpandedScreen : Boolean
 ) {
@@ -65,12 +65,13 @@ fun OtherUsersScreen(
                     OptionsEnum.ADD
                 ),
                 menuOnClickOptions = listOf(
-
+                    {}
                 )
 
             )
 
-            ContactAddedSnackbar(user, viewModel = viewModel)
+            // TODO: Implement snackbar
+//            ContactAddedSnackbar(user, viewModel = viewModel)
 
         }
     }
@@ -78,25 +79,26 @@ fun OtherUsersScreen(
 
 }
 
-@Composable
-fun ContactAddedSnackbar(contact : Contact, viewModel: ContactsViewModel) {
-    val scope = viewModel.viewModelScope
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = {Text("${contact.displayName} added to contacts")},
-                onClick = {
-                    scope.launch {
-                        snackbarHostState.showSnackbar("")
-                    }
-                }
-            )
-        }
-    ) {}
-}
+//@Composable
+//fun ContactAddedSnackbar(contact : Contact, viewModel: OtherUsersViewModel) {
+//    val scope = viewModel.viewModelScope
+//    val snackbarHostState = remember { SnackbarHostState() }
+//
+//    Scaffold(
+//        snackbarHost = {
+//            SnackbarHost(hostState = snackbarHostState)
+//        },
+//        floatingActionButton = {
+//            ExtendedFloatingActionButton(
+//                text = {Text("${contact.displayName} added to contacts")},
+//                onClick = {
+//                    scope.launch {
+//                        snackbarHostState.showSnackbar("")
+//                    }
+//                }
+//            )
+//        }
+//    ) {
+//    }
+//}
 

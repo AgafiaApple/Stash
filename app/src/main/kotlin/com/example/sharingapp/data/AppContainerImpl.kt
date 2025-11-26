@@ -3,6 +3,7 @@ package com.example.sharingapp.data
 import android.content.Context
 import com.example.sharingapp.data.contacts.ContactsRepository
 import com.example.sharingapp.data.contacts.impl.FakeContactsRepository
+import com.example.sharingapp.data.contacts.impl.FakeOtherUsersRepository
 import com.example.sharingapp.data.items.ItemsRepository
 import com.example.sharingapp.data.items.impl.FakeItemsRepository
 
@@ -13,6 +14,8 @@ interface AppContainer {
 
     val contactsRepository : ContactsRepository
     val itemsRepository : ItemsRepository
+
+    val otherUsersRepository : ContactsRepository
 }
 
 /**
@@ -28,5 +31,9 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
     override val itemsRepository: ItemsRepository by lazy {
         FakeItemsRepository()
+    }
+
+    override val otherUsersRepository: ContactsRepository by lazy {
+        FakeOtherUsersRepository()
     }
 }

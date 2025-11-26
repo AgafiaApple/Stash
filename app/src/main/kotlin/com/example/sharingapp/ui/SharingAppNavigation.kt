@@ -20,7 +20,10 @@ enum class AppDestination(val icon : ComposeIcon) {
 
     EDIT_ITEM(EditPencilIcon()),
 
-    ADD_ITEM(AddBoxIcon())
+    ADD_ITEM(AddBoxIcon()),
+
+    // TODO: changed to a different icon later
+    USERS(ContactsIcon())
 }
 
 class SharingAppNavigation(navController: NavHostController) {
