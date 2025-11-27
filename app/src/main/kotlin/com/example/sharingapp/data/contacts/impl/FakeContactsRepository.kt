@@ -39,9 +39,14 @@ class FakeContactsRepository : ContactsRepository {
     }
 
     override suspend fun addContact(contact: Contact): Boolean {
+        val newContact = Contact(contact.displayName,
+            contact.username,
+            contact.email,
+            getThenIncrementIdx(),
+            description = contact.description)
 
         _contactsFlow.update {currentList ->
-            currentList + contact
+            currentList + newContact
         }
         return true
     }
@@ -54,8 +59,8 @@ class FakeContactsRepository : ContactsRepository {
     }
 
     companion object {
-        var nextIdx : Long = 0
-        fun getThenIncrementIdx() : Long {
+        private var nextIdx : Long = 0
+        private fun getThenIncrementIdx() : Long {
             val idx = nextIdx
             nextIdx = nextIdx + 1
             return idx

@@ -27,12 +27,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OtherUsersScreen(
-    viewModel : OtherUsersViewModel,
+    otherUsersViewModel : OtherUsersViewModel,
+    contactsViewModel : ContactsViewModel,
     innerPadding : PaddingValues = PaddingValues(),
     isExpandedScreen : Boolean
 ) {
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by otherUsersViewModel.uiState.collectAsStateWithLifecycle()
 
     var expandedContactId by remember {mutableStateOf<Long?>(null)}
 
@@ -52,6 +53,10 @@ fun OtherUsersScreen(
     LazyColumn(contentPadding = innerPadding) {
         items(uiState.contacts, key = {user -> user.id}) { user ->
 
+            val addToContacts = { user : Contact ->
+                contactsViewModel.addContact(user)
+            }
+
             ExpandableCard(
                 item = user,
                 isExpanded = (expandedContactId == user.id),
@@ -65,13 +70,10 @@ fun OtherUsersScreen(
                     OptionsEnum.ADD
                 ),
                 menuOnClickOptions = listOf(
-                    {}
+                    {addToContacts(user)}
                 )
 
             )
-
-            // TODO: Implement snackbar
-//            ContactAddedSnackbar(user, viewModel = viewModel)
 
         }
     }

@@ -48,6 +48,13 @@ class ContactsViewModel(private val repository : ContactsRepository) : ViewModel
 
     }
 
+    fun addContact(contact : Contact) {
+        viewModelScope.launch {
+            repository.addContact(contact)
+        }
+
+    }
+
     // implement factory creator object
     companion object {
         fun provideFactory(contactsRepository: ContactsRepository): ViewModelProvider.Factory =

@@ -137,13 +137,22 @@ fun AppNavGraph(
             route = AppDestination.USERS.name
         ) {
             // TODO: make a OtherUsersViewModel
-            val viewModel : OtherUsersViewModel = viewModel(
+            val otherUsersViewModel : OtherUsersViewModel = viewModel(
                 factory = OtherUsersViewModel.provideFactory(
                     contactsRepository = appContainer.otherUsersRepository
                 )
             )
 
-            OtherUsersScreen(viewModel, innerPadding = innerPadding, isExpandedScreen = isExpandedScreen)
+            val contactsViewModel : ContactsViewModel = viewModel(
+                factory = ContactsViewModel.provideFactory(
+                    contactsRepository = appContainer.contactsRepository
+                )
+            )
+
+            OtherUsersScreen(otherUsersViewModel,
+                innerPadding = innerPadding,
+                isExpandedScreen = isExpandedScreen,
+                contactsViewModel = contactsViewModel)
         }
 
 
